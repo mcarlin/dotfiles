@@ -9,6 +9,21 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
 	export TERM='xterm-256color';
 fi;
 
+prompt_hg()
+{
+    local branchName='';
+
+    # Check if this directory is under a Mercurial repository
+    if [ $(hg st -q &>/dev/null;echo "${?}") == '0' ]; then
+        
+        branchName=`hg branch`;
+
+	    echo -e "${1}${branchName}";
+    else        
+        return;
+    fi;
+}
+
 prompt_git() {
 	local s='';
 	local branchName='';
@@ -50,6 +65,7 @@ prompt_git() {
 		branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
 			git rev-parse --short HEAD 2> /dev/null || \
 			echo '(unknown)')";
+
 
 		[ -n "${s}" ] && s=" [${s}]";
 
@@ -112,6 +128,7 @@ PS1+="\[${hostStyle}\]\h"; # host
 PS1+="\[${white}\] in ";
 PS1+="\[${green}\]\w"; # working directory
 PS1+="\$(prompt_git \"${white} on ${violet}\")"; # Git repository details
+PS1+="\$(prompt_hg \"${white} on ${violet}\")"; # Hg repository details
 PS1+="\n";
 PS1+="\[${white}\]\$ \[${reset}\]"; # `$` (and reset color)
 export PS1;
