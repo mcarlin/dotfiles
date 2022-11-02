@@ -1,4 +1,4 @@
-ctrl + shift - z : ~/toggle_zen.fish
+ctrl + shift - z : ~/toggle_zen.bash
 
 # Focus windows
 alt - h : yabai -m window --focus west
@@ -45,3 +45,4 @@ shift + alt - space : \
 # Rotate windows clockwise and anticlockwise
 alt - r         : yabai -m space --rotate 270
 shift + alt - r : yabai -m space --rotate 90
+
