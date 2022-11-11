@@ -3,6 +3,12 @@ vim.o.shiftwidth = 2
 vim.o.tabstop=2
 vim.o.softtabstop=2
 
+local cache_dir = vim.env.XDG_CACHE_HOME or "~/.cache"
+local undo_dir = cache_dir .. "/nvim/undo"
+os.execute("mkdir -p " .. undo_dir)
+vim.o.undodir = undo_dir
+vim.bo.undofile = true
+
 vim.g.mapleader = ","
 
 vim.g.loaded_netrw = 1
@@ -26,6 +32,9 @@ Plug 'nvim-tree/nvim-tree.lua'
 
 Plug 'Pocco81/true-zen.nvim'
 Plug 'windwp/nvim-autopairs'
+
+Plug 'ggandor/lightspeed.nvim'
+Plug 'tpope/vim-repeat'
 
 vim.call('plug#end')
 
@@ -149,3 +158,10 @@ keymap.set("i", "<C-b>",
 keymap.set("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
 keymap.set("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 
+require'lightspeed'.setup {
+  jump_to_unique_chars = false,
+  safe_labels = {}
+}
+
+keymap.set("n", "s", '<Plug>Lightspeed_omni_s', {silent = true})
+keymap.set("v", "s", '<Plug>Lightspeed_omni_s', {silent = true})

@@ -62,7 +62,39 @@ if has('ide') """ IDEA
 
   map <leader>b <Action>(ToggleLineBreakpoint)
 
+  nmap s <Plug>(easymotion-overwin-w)
+
 elseif exists('g:vscode') """ VSCode
+
+  """ Idea specific mappings
+"  map <leader><leader>d <Action>(Debug)
+"  map <leader><leader>r <Action>(Run)
+"  map <leader><leader>s <Action>(Stop)
+"
+  """ Refactoring
+  map <leader>r <Cmd>call VSCodeNotify('editor.action.rename')<CR>
+"  map <leader>r <Action>(RenameElement)
+"  map <leader>p <Action>(IntroduceParameter)
+"  map <leader>fp <Action>(IntroduceFunctionalParameter)
+"  map <leader>c <Action>(IntroduceConstant)
+"  map <leader>v <Action>(IntroduceVariable)
+"  map <leader>d <Action>(QuickJavaDoc)
+"
+"  map <leader>R <Action>(Refactorings.QuickListPopupAction)
+"
+"  map <leader>a <Action>(Annotate)
+"
+"  map <S-Space> <Action>(GotoNextError)
+"
+  """ Navigate / Search
+"  map <leader>o <Action>(FileStructurePopup)
+"  map <leader>ff <Action>(SearchEverywhere)
+"  map <leader>fg <Action>(FindInPath)
+"  map <leader>gd <Action>(GotoDeclaration)
+"  map <leader>gD <Action>(GotoTypeDeclaration)
+"  map <leader>gr <Action>(FindUsages)
+"
+"  map <leader>b <Action>(ToggleLineBreakpoint)
 
 
 else """ Vanilla
