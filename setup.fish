@@ -11,3 +11,5 @@ ln -fs (realpath nvim/lua/base.lua) ~/.config/nvim/lua/base.lua
 mkdir -p ~/.config/kitty
 ln -fs (realpath kitty.conf) ~/.config/kitty/kitty.conf
 ln -fs (realpath kitty-theme.conf) ~/.config/kitty/kitty-theme.conf
+
+ln -fs (realpath ideavimrc) ~/.ideavimrc
