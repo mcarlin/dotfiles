@@ -1,5 +1,7 @@
 #!/usr/bin/env fish
 
+lns -fs (realpath config.fish) ~/.config/fish/config.fish
+
 ln -fs (realpath skhdrc) ~/.skhdrc
 ln -fs (realpath tmux.conf) ~/.tmux.conf
 ln -fs (realpath yabairc) ~/.yabairc
