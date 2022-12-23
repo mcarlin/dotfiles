@@ -16,3 +16,10 @@ ln -fs (realpath kitty.conf) ~/.config/kitty/kitty.conf
 ln -fs (realpath kitty-theme.conf) ~/.config/kitty/kitty-theme.conf
 
 ln -fs (realpath ideavimrc) ~/.ideavimrc
+
+mkdir -p ~/.config/alacritty
+ln -fs (realpath alacritty.yml) ~/.config/alacritty/alacritty.yml
+
+if test ! -e ~/.alacritty-colorscheme
+  git clone https://github.com/eendroroy/alacritty-theme.git ~/.alacritty-colorscheme
+end 
