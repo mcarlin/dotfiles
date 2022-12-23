@@ -73,6 +73,7 @@ elseif exists('g:vscode') """ VSCode
 "
   """ Refactoring
   map <leader>r <Cmd>call VSCodeNotify('editor.action.rename')<CR>
+  map <leader>gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
 "  map <leader>r <Action>(RenameElement)
 "  map <leader>p <Action>(IntroduceParameter)
 "  map <leader>fp <Action>(IntroduceFunctionalParameter)
