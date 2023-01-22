@@ -101,5 +101,6 @@ elseif exists('g:vscode') """ VSCode
 else """ Vanilla
 
 lua require('base')
+lua require('plugins')
 
 end
