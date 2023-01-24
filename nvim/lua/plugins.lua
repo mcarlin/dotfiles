@@ -121,7 +121,7 @@ return require('packer').startup(function(use)
 
   use {
     'windwp/nvim-autopairs',
-    requires = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip'  },
+    requires = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip', 'saecki/crates.nvim' },
     config = function()
       require("nvim-autopairs").setup {}
 
@@ -169,6 +169,7 @@ return require('packer').startup(function(use)
         sources = {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
+          { name = 'crates' },
         },
       }
 
@@ -407,5 +408,14 @@ return require('packer').startup(function(use)
 
     end
   }
+
+  use {
+    'saecki/crates.nvim',
+    tag = 'v0.3.0',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+        require('crates').setup()
+    end,
+}
 
 end)
