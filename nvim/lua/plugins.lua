@@ -121,7 +121,7 @@ return require('packer').startup(function(use)
 
   use {
     'windwp/nvim-autopairs',
-    requires = { 'hrsh7th/nvim-cmp' },
+    requires = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip'  },
     config = function()
       require("nvim-autopairs").setup {}
 
@@ -130,7 +130,47 @@ return require('packer').startup(function(use)
       cmp.event:on(
       'confirm_done',
       cmp_autopairs.on_confirm_done()
-      )
+      ) 
+      local luasnip = require 'luasnip'
+
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+          },
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+        }),
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+        },
+      }
 
     end
   }
@@ -146,9 +186,10 @@ return require('packer').startup(function(use)
 
   use {
     'neovim/nvim-lspconfig',
-    requires = {{'hrsh7th/vmp-nvim-lsp'}, {'saadparwaiz1/cmp_luasnip'}},
+    requires = {{'hrsh7th/cmp-nvim-lsp'}, {'saadparwaiz1/cmp_luasnip'}},
     config = function()
       local lspconfig = require('lspconfig')
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
       local servers = { 'clangd', 'pyright', 'tsserver' }
@@ -324,6 +365,7 @@ return require('packer').startup(function(use)
 
   use {
     'folke/trouble.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     config = function()
       require("trouble").setup {}
       vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
