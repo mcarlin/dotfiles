@@ -426,4 +426,8 @@ return require('packer').startup(function(use)
     end
   }
 
+  use {
+    'RRethy/vim-illuminate'
+  }
+
 end)
