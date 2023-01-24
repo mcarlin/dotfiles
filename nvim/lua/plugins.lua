@@ -416,6 +416,14 @@ return require('packer').startup(function(use)
     config = function()
         require('crates').setup()
     end,
-}
+  }
+
+  use { 
+    'echasnovski/mini.indentscope', 
+    branch = 'stable',
+    config = function()
+      require('mini.indentscope').setup()
+    end
+  }
 
 end)
