@@ -1,6 +1,6 @@
 import:
   - ~/.alacritty-colorscheme/themes/gruvbox_dark.yaml
 font:
+  size: 18
   normal:
     family: FuraMono Nerd Font Mono
-
