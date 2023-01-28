@@ -39,7 +39,7 @@ if has('ide') """ IDEA
   map <leader><leader>s <Action>(Stop)
 
   """ Refactoring
-  map <leader>r <Action>(RenameElement)
+  map <leader>r i<Action>(RenameElement)
   map <leader>p <Action>(IntroduceParameter)
   map <leader>fp <Action>(IntroduceFunctionalParameter)
   map <leader>c <Action>(IntroduceConstant)
@@ -48,7 +48,7 @@ if has('ide') """ IDEA
 
   map <leader>R <Action>(Refactorings.QuickListPopupAction)
 
-  map <leader>a <Action>(Annotate)
+  map <leader>a <Action>(ShowIntentionActions)
 
   map <S-Space> <Action>(GotoNextError)
 
@@ -59,8 +59,12 @@ if has('ide') """ IDEA
   map <leader>gd <Action>(GotoDeclaration)
   map <leader>gD <Action>(GotoTypeDeclaration)
   map <leader>gr <Action>(FindUsages)
+  map <leader>fs <Action>(FileStructurePopup)
 
   map <leader>b <Action>(ToggleLineBreakpoint)
+  map <leader>xx <Action>(ActivateProblemsViewToolWindow)
+
+  map <leader>tt <Action>(ActivateProjectToolWindow)
 
   nmap s <Plug>(easymotion-overwin-w)
 
