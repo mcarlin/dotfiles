@@ -452,4 +452,15 @@ return require('packer').startup(function(use)
     'RRethy/vim-illuminate'
   }
 
+  use {
+    'kyazdani42/nvim-web-devicons'
+  }
+
+  use {
+    'p00f/clangd_extensions.nvim',
+    config = function()
+      require("clangd_extensions").prepare()
+    end
+  }
+
 end)
