@@ -571,4 +571,11 @@ return require('packer').startup(function(use)
   }
 
   use 'lewis6991/impatient.nvim'
+
+  use {
+    "petertriho/nvim-scrollbar",
+    config = function ()
+      require("scrollbar").setup()
+    end
+  }
 end)
