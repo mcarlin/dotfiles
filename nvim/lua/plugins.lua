@@ -11,6 +11,8 @@ end
 
 local packer_bootstrap = ensure_packer()
 
+require('impatient')
+
 return require('packer').startup(function(use)
 
   use {
@@ -20,8 +22,6 @@ return require('packer').startup(function(use)
       vim.cmd([[colorscheme gruvbox]])
     end
   }
-
-  use 'tpope/vim-sensible'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -90,11 +90,18 @@ return require('packer').startup(function(use)
       }
       telescope.load_extension('fzf')
       telescope.load_extension("recent_files")
+      telescope.load_extension('projects')
 
       -- Telescope Recent Files Extension
       vim.api.nvim_set_keymap("n", "<leader><cr>",
       [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
       {noremap = true, silent = true})
+
+      -- Telescope Project Extension
+      vim.api.nvim_set_keymap("n", "<leader>fp",
+      [[<cmd>lua require'telescope'.extensions.projects.projects{}<CR>]],
+      {noremap = true, silent = true})
+
     end
   }
 
@@ -103,9 +110,19 @@ return require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     config = function()
-      require('lualine').setup {
-        options = { theme = 'gruvbox' }
-      }
+      local navic = require("nvim-navic")
+      require('lualine').setup ({
+        options = { 
+          theme = 'gruvbox',
+          globalstatus = true
+        },
+        sections = {
+          lualine_c = {
+            {'filename', path = 1, shorting_target = 40},
+            { navic.get_location, cond = navic.is_available },
+          }
+        }
+      })
     end
   }
 
@@ -113,7 +130,14 @@ return require('packer').startup(function(use)
     'nvim-tree/nvim-tree.lua',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     config = function()
-      require("nvim-tree").setup()
+      require("nvim-tree").setup({
+        sync_root_with_cwd = true,
+        respect_buf_cwd = true,
+        update_focused_file = {
+          enable = true,
+          update_root = true
+        },
+      })
       vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle <CR>', { noremap = true, silent = true })
 
     end
@@ -192,15 +216,6 @@ return require('packer').startup(function(use)
       local lspconfig = require('lspconfig')
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'pyright', 'tsserver', 'rust_analyzer' }
-      for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup {
-          -- on_attach = my_custom_on_attach,
-          capabilities = capabilities,
-        }
-      end
-
       local opts = { noremap=true, silent=true }
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
@@ -226,29 +241,27 @@ return require('packer').startup(function(use)
         vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
         vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
         vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-      end
 
+        if client.server_capabilities.documentSymbolProvider then
+          local navic = require("nvim-navic")
+          navic.attach(client, bufnr)
+        end
+      end
 
       local lsp_flags = {
         debounce_text_changes = 150,
       }
-      require('lspconfig')['pyright'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-      }
-      require('lspconfig')['tsserver'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-      }
-      require('lspconfig')['clangd'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-      }
-      require('lspconfig')['rust_analyzer'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-      }
+      -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+      local servers = { 'clangd', 'pyright', 'tsserver' }
+      for _, lsp in ipairs(servers) do
+        lspconfig[lsp].setup {
+          -- on_attach = my_custom_on_attach,
+          capabilities = capabilities,
+          on_attach = on_attach,
+          flags = lsp_flags,
 
+        }
+      end
     end
   }
 
@@ -273,11 +286,13 @@ return require('packer').startup(function(use)
 
       rt.setup({
         server = {
-          on_attach = function(_, bufnr)
+          on_attach = function(client, bufnr)
             -- Hover actions
             vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
             -- Code action groups
             vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
             local bufopts = { noremap=true, silent=true, buffer=bufnr }
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -294,7 +309,12 @@ return require('packer').startup(function(use)
             vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
             vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
             vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
- 
+
+            -- if client.server_capabilities.documentSymbolProvider then
+            local navic = require("nvim-navic")
+            navic.attach(client, bufnr)
+            -- end
+
           end,
         },
         dap = {
@@ -426,6 +446,7 @@ return require('packer').startup(function(use)
     config = function()
       require("auto-session").setup {
         log_level = "error",
+        auto_restore_enabled = false,
       }
 
     end
@@ -436,16 +457,8 @@ return require('packer').startup(function(use)
     tag = 'v0.3.0',
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
-        require('crates').setup()
+      require('crates').setup()
     end,
-  }
-
-  use { 
-    'echasnovski/mini.indentscope', 
-    branch = 'stable',
-    config = function()
-      require('mini.indentscope').setup()
-    end
   }
 
   use {
@@ -463,4 +476,99 @@ return require('packer').startup(function(use)
     end
   }
 
+  use { 
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+  }
+
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  }
+
+  use {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup()
+    end
+  }
+
+  use {
+    "SmiteshP/nvim-navic",
+    requires = "neovim/nvim-lspconfig",
+  }
+
+  use {
+    'romgrk/barbar.nvim', 
+    requires = 'nvim-web-devicons'
+  }
+
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      vim.opt.list = true
+      vim.opt.listchars:append "space:⋅"
+      vim.opt.listchars:append "eol:↴"
+
+      require("indent_blankline").setup {
+        space_char_blankline = " ",
+        use_treesitter_scope = true,
+        show_end_of_line = true,
+        show_current_context = true,
+        show_current_context_start = true,
+      }
+    end
+  }
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup {
+        on_attach = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', '<leader>rr', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+          end, {expr=true})
+
+          map('n', '<leader>ee', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+          end, {expr=true})
+
+          -- Actions
+          map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+          map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+          map('n', '<leader>hS', gs.stage_buffer)
+          map('n', '<leader>hu', gs.undo_stage_hunk)
+          map('n', '<leader>hR', gs.reset_buffer)
+          map('n', '<leader>hp', gs.preview_hunk)
+          map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+          map('n', '<leader>tb', gs.toggle_current_line_blame)
+          map('n', '<leader>hd', gs.diffthis)
+          map('n', '<leader>hD', function() gs.diffthis('~') end)
+          map('n', '<leader>td', gs.toggle_deleted)
+
+          -- Text object
+          map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
+      }
+    end
+  }
+
+  use 'lewis6991/impatient.nvim'
 end)
