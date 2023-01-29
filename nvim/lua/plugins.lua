@@ -41,8 +41,8 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'nvim-telescope/telescope.nvim', 
-    tag = '0.1.1', 
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.1',
     requires = {{'nvim-lua/plenary.nvim'}, {'smartpde/telescope-recent-files'}, {'nvim-telescope/telescope-fzf-native.nvim'}},
     config = function()
       local builtin = require('telescope.builtin')
@@ -112,7 +112,7 @@ return require('packer').startup(function(use)
     config = function()
       local navic = require("nvim-navic")
       require('lualine').setup ({
-        options = { 
+        options = {
           theme = 'gruvbox',
           globalstatus = true
         },
@@ -154,7 +154,7 @@ return require('packer').startup(function(use)
       cmp.event:on(
       'confirm_done',
       cmp_autopairs.on_confirm_done()
-      ) 
+      )
       local luasnip = require 'luasnip'
 
       cmp.setup {
@@ -252,7 +252,7 @@ return require('packer').startup(function(use)
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'pyright', 'tsserver' }
+      local servers = { 'clangd', 'pyright', 'tsserver', 'sumneko_lua', }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
@@ -266,7 +266,7 @@ return require('packer').startup(function(use)
   }
 
   use {
-    "L3MON4D3/LuaSnip", 
+    "L3MON4D3/LuaSnip",
     tag = "v1.*"
   }
 
@@ -476,7 +476,7 @@ return require('packer').startup(function(use)
     end
   }
 
-  use { 
+  use {
     "williamboman/mason.nvim",
     config = function()
       require("mason").setup()
@@ -503,7 +503,7 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'romgrk/barbar.nvim', 
+    'romgrk/barbar.nvim',
     requires = 'nvim-web-devicons'
   }
 
