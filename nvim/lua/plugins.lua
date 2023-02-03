@@ -307,7 +307,7 @@ return require('packer').startup(function(use)
               print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end, bufopts)
             vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
-            vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
+            vim.keymap.set({'n', 'v'}, '<leader>a', vim.lsp.buf.code_action, bufopts)
             vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 
             -- if client.server_capabilities.documentSymbolProvider then
@@ -446,7 +446,7 @@ return require('packer').startup(function(use)
     config = function()
       require("auto-session").setup {
         log_level = "error",
-        auto_restore_enabled = false,
+        auto_restore_enabled = true,
       }
 
     end
