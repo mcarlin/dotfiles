@@ -252,7 +252,7 @@ return require('packer').startup(function(use)
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'pyright', 'tsserver', 'sumneko_lua', }
+      local servers = { 'clangd', 'pyright', 'tsserver', 'sumneko_lua', 'taplo', }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
