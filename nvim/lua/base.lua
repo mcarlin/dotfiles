@@ -1,4 +1,4 @@
-local cache_dir = vim.env.XDG_CACHE_HOME or "~/.cache"
+local cache_dir = vim.env.XDG_CACHE_HOME or vim.fn.expand("~/.cache")
 local undo_dir = cache_dir .. "/nvim/undo"
 os.execute("mkdir -p " .. undo_dir)
 vim.o.undodir = undo_dir
