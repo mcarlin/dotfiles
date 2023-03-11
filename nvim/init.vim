@@ -53,13 +53,14 @@ if has('ide') """ IDEA
   map <S-Space> <Action>(GotoNextError)
 
   """ Navigate / Search
-  map <leader>o <Action>(FileStructurePopup)
   map <leader>ff <Action>(SearchEverywhere)
   map <leader>fg <Action>(FindInPath)
   map <leader>gd <Action>(GotoDeclaration)
   map <leader>gD <Action>(GotoTypeDeclaration)
+  map <leader>gi <Action>(GotoImplementation)
   map <leader>gr <Action>(FindUsages)
   map <leader>fs <Action>(FileStructurePopup)
+  map <leader><enter> <Action>(Switcher)
 
   map <leader>b <Action>(ToggleLineBreakpoint)
   map <leader>xx <Action>(ActivateProblemsViewToolWindow)
