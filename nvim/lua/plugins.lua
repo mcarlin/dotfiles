@@ -252,7 +252,7 @@ return require('packer').startup(function(use)
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'pyright', 'tsserver', 'sumneko_lua', 'taplo', }
+      local servers = { 'clangd', 'pyright', 'tsserver', 'lua_ls', 'taplo' }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
@@ -576,6 +576,13 @@ return require('packer').startup(function(use)
     "petertriho/nvim-scrollbar",
     config = function ()
       require("scrollbar").setup()
+    end
+  }
+
+  use {
+    'j-hui/fidget.nvim',
+    config = function ()
+      require("fidget").setup{}
     end
   }
 end)
