@@ -1,8 +1,8 @@
 local ensure_packer = function()
   local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
     vim.cmd [[packadd packer.nvim]]
     return true
   end
@@ -14,7 +14,6 @@ local packer_bootstrap = ensure_packer()
 require('impatient')
 
 return require('packer').startup(function(use)
-
   use {
     'ellisonleao/gruvbox.nvim',
     config = function()
@@ -27,7 +26,7 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = function()
-      require'nvim-treesitter.configs'.setup {
+      require 'nvim-treesitter.configs'.setup {
         ensure_installed = { "c", "lua", "rust" },
 
         auto_install = true,
@@ -43,7 +42,8 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.1',
-    requires = {{'nvim-lua/plenary.nvim'}, {'smartpde/telescope-recent-files'}, {'nvim-telescope/telescope-fzf-native.nvim'}},
+    requires = { { 'nvim-lua/plenary.nvim' }, { 'smartpde/telescope-recent-files' },
+      { 'nvim-telescope/telescope-fzf-native.nvim' } },
     config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -75,15 +75,15 @@ return require('packer').startup(function(use)
         },
         pickers = {
           find_files = {
-            find_command = { "rg", "--ignore", "-L", "--hidden", "--files"}
+            find_command = { "rg", "--ignore", "-L", "--hidden", "--files" }
           }
         },
         extensions = {
           fzf = {
-            fuzzy = true,                    -- false will only do exact matching
-            override_generic_sorter = true,  -- override the generic sorter
-            override_file_sorter = true,     -- override the file sorter
-            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+            fuzzy = true,                   -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           }
         }
@@ -94,14 +94,13 @@ return require('packer').startup(function(use)
 
       -- Telescope Recent Files Extension
       vim.api.nvim_set_keymap("n", "<leader><cr>",
-      [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
-      {noremap = true, silent = true})
+        [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
+        { noremap = true, silent = true })
 
       -- Telescope Project Extension
       vim.api.nvim_set_keymap("n", "<leader>fp",
-      [[<cmd>lua require'telescope'.extensions.projects.projects{}<CR>]],
-      {noremap = true, silent = true})
-
+        [[<cmd>lua require'telescope'.extensions.projects.projects{}<CR>]],
+        { noremap = true, silent = true })
     end
   }
 
@@ -111,14 +110,14 @@ return require('packer').startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     config = function()
       local navic = require("nvim-navic")
-      require('lualine').setup ({
+      require('lualine').setup({
         options = {
           theme = 'gruvbox',
           globalstatus = true
         },
         sections = {
           lualine_c = {
-            {'filename', path = 1, shorting_target = 40},
+            { 'filename',         path = 1,                 shorting_target = 40 },
             { navic.get_location, cond = navic.is_available },
           }
         }
@@ -139,7 +138,6 @@ return require('packer').startup(function(use)
         },
       })
       vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle <CR>', { noremap = true, silent = true })
-
     end
   }
 
@@ -152,8 +150,8 @@ return require('packer').startup(function(use)
       local cmp_autopairs = require('nvim-autopairs.completion.cmp')
       local cmp = require('cmp')
       cmp.event:on(
-      'confirm_done',
-      cmp_autopairs.on_confirm_done()
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
       )
       local luasnip = require 'luasnip'
 
@@ -196,7 +194,6 @@ return require('packer').startup(function(use)
           { name = 'crates' },
         },
       }
-
     end
   }
 
@@ -211,12 +208,12 @@ return require('packer').startup(function(use)
 
   use {
     'neovim/nvim-lspconfig',
-    requires = {{'hrsh7th/cmp-nvim-lsp'}, {'saadparwaiz1/cmp_luasnip'}},
+    requires = { { 'hrsh7th/cmp-nvim-lsp' }, { 'saadparwaiz1/cmp_luasnip' } },
     config = function()
       local lspconfig = require('lspconfig')
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local opts = { noremap=true, silent=true }
+      local opts = { noremap = true, silent = true }
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -224,9 +221,9 @@ return require('packer').startup(function(use)
       local on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-        vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+        vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-        local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        local bufopts = { noremap = true, silent = true, buffer = bufnr }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
@@ -273,8 +270,10 @@ return require('packer').startup(function(use)
 
   use {
     'simrat39/rust-tools.nvim',
-    config = function ()
-      local extension_path = vim.env.HOME .. '/.vscode/extensions/vadimcn.vscode-lldb-1.8.1/'
+    config = function()
+      local extension_path = require('mason-registry').get_package('codelldb'):get_install_path()
+
+
       local codelldb_path = extension_path .. 'adapter/codelldb'
       local liblldb_path = ''
       if (vim.loop.os_uname().sysname == 'Darwin') then
@@ -294,9 +293,9 @@ return require('packer').startup(function(use)
             vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
             vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-            vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+            vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-            local bufopts = { noremap=true, silent=true, buffer=bufnr }
+            local bufopts = { noremap = true, silent = true, buffer = bufnr }
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
             vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
@@ -310,19 +309,18 @@ return require('packer').startup(function(use)
               print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end, bufopts)
             vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
-            vim.keymap.set({'n', 'v'}, '<leader>a', vim.lsp.buf.code_action, bufopts)
+            vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, bufopts)
             vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 
             -- if client.server_capabilities.documentSymbolProvider then
             local navic = require("nvim-navic")
             navic.attach(client, bufnr)
             -- end
-
           end,
         },
         dap = {
           adapter = require('rust-tools.dap').get_codelldb_adapter(
-          codelldb_path, liblldb_path)
+            codelldb_path, liblldb_path)
         },
       })
     end
@@ -330,9 +328,8 @@ return require('packer').startup(function(use)
 
   use {
     'mfussenegger/nvim-dap',
-    requires = {'rcarriga/nvim-dap-ui'},
+    requires = { 'rcarriga/nvim-dap-ui' },
     config = function()
-
       require("dapui").setup()
 
       local dap, dapui = require("dap"), require("dapui")
@@ -345,7 +342,6 @@ return require('packer').startup(function(use)
       dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
-
     end
   }
 
@@ -356,23 +352,18 @@ return require('packer').startup(function(use)
     'ray-x/lsp_signature.nvim',
     config = function()
       cfg = {
-        debug = false, -- set to true to enable debug logging
+        debug = false,                                              -- set to true to enable debug logging
         log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
         -- default is  ~/.cache/nvim/lsp_signature.log
-        verbose = false, -- show debug line number
-
+        verbose = false,                                            -- show debug line number
         bind = true,
         doc_lines = 10,
-
         max_height = 12,
         max_width = 80,
         noice = false,
         wrap = true,
-
         floating_window = true,
-
         floating_window_above_cur_line = true,
-
         floating_window_off_x = 1,
         floating_window_off_y = 0,
         -- can be either number or function, see examples
@@ -386,26 +377,21 @@ return require('packer').startup(function(use)
         handler_opts = {
           border = "rounded"
         },
-
         always_trigger = false,
-
         auto_close_after = nil,
         extra_trigger_chars = {},
         zindex = 200,
-
         padding = '',
-
         transparency = nil,
         shadow_blend = 36,
         shadow_guibg = 'Black',
         timer_interval = 200,
         toggle_key = nil,
-
         select_signature_key = nil,
         move_cursor_key = nil,
       }
 
-      require'lsp_signature'.setup(cfg)
+      require 'lsp_signature'.setup(cfg)
     end
   }
 
@@ -415,22 +401,22 @@ return require('packer').startup(function(use)
     config = function()
       require("trouble").setup {}
       vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
       vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
       vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
       vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
       vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
       vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
     end
   }
@@ -439,7 +425,7 @@ return require('packer').startup(function(use)
     'kdheepak/lazygit.nvim',
     config = function()
       vim.keymap.set("n", "<leader>vg", "<cmd>LazyGit<cr>",
-      {silent = true, noremap = true}
+        { silent = true, noremap = true }
       )
     end
   }
@@ -451,7 +437,6 @@ return require('packer').startup(function(use)
         log_level = "error",
         auto_restore_enabled = true,
       }
-
     end
   }
 
@@ -545,29 +530,29 @@ return require('packer').startup(function(use)
             if vim.wo.diff then return ']c' end
             vim.schedule(function() gs.next_hunk() end)
             return '<Ignore>'
-          end, {expr=true})
+          end, { expr = true })
 
           map('n', '<leader>ee', function()
             if vim.wo.diff then return '[c' end
             vim.schedule(function() gs.prev_hunk() end)
             return '<Ignore>'
-          end, {expr=true})
+          end, { expr = true })
 
           -- Actions
-          map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-          map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+          map({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+          map({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>')
           map('n', '<leader>hS', gs.stage_buffer)
           map('n', '<leader>hu', gs.undo_stage_hunk)
           map('n', '<leader>hR', gs.reset_buffer)
           map('n', '<leader>hp', gs.preview_hunk)
-          map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+          map('n', '<leader>hb', function() gs.blame_line { full = true } end)
           map('n', '<leader>tb', gs.toggle_current_line_blame)
           map('n', '<leader>hd', gs.diffthis)
           map('n', '<leader>hD', function() gs.diffthis('~') end)
           map('n', '<leader>td', gs.toggle_deleted)
 
           -- Text object
-          map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
         end
       }
     end
@@ -577,15 +562,15 @@ return require('packer').startup(function(use)
 
   use {
     "petertriho/nvim-scrollbar",
-    config = function ()
+    config = function()
       require("scrollbar").setup()
     end
   }
 
   use {
     'j-hui/fidget.nvim',
-    config = function ()
-      require("fidget").setup{}
+    config = function()
+      require("fidget").setup {}
     end
   }
 end)
