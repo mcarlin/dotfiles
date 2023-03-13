@@ -270,6 +270,7 @@ return require('packer').startup(function(use)
 
   use {
     'simrat39/rust-tools.nvim',
+    after = "mason.nvim",
     config = function()
       local extension_path = require('mason-registry').get_package('codelldb'):get_install_path()
 
