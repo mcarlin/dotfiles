@@ -351,7 +351,7 @@ return require('packer').startup(function(use)
   use {
     'ray-x/lsp_signature.nvim',
     config = function()
-      cfg = {
+      local cfg = {
         debug = false,                                              -- set to true to enable debug logging
         log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
         -- default is  ~/.cache/nvim/lsp_signature.log
@@ -571,6 +571,36 @@ return require('packer').startup(function(use)
     'j-hui/fidget.nvim',
     config = function()
       require("fidget").setup {}
+    end
+  }
+
+  use {
+    "folke/zen-mode.nvim",
+    config = function()
+      require("zen-mode").setup {
+        options = {
+          signcolumn = "yes",
+          number = true,
+        },
+        plugins = {
+          gitsigns = {
+            enabled = "true",
+          },
+          alacritty = {
+            enabled = true,
+            font = 22,
+          },
+        },
+      }
+    end
+  }
+
+  use {
+    "stevearc/aerial.nvim",
+    config = function()
+      require('aerial').setup({
+        vim.keymap.set('n', '<leader>ta', '<cmd>AerialToggle!<CR>')
+      })
     end
   }
 end)
