@@ -145,7 +145,7 @@ require("lazy").setup({
  {
    'windwp/nvim-autopairs',
     event = "InsertEnter",
-   dependencies = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip', 'saecki/crates.nvim' },
+   dependencies = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip', 'saecki/crates.nvim'},
    config = function()
      require("nvim-autopairs").setup {}
  
@@ -165,6 +165,7 @@ require("lazy").setup({
        },
        mapping = cmp.mapping.preset.insert({
          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+
          ['<C-f>'] = cmp.mapping.scroll_docs(4),
          ['<C-Space>'] = cmp.mapping.complete(),
          ['<CR>'] = cmp.mapping.confirm {
@@ -196,6 +197,7 @@ require("lazy").setup({
          { name = 'crates' },
        },
      }
+    require("luasnip/loaders/from_vscode").lazy_load()
    end
  },
  
@@ -266,10 +268,14 @@ require("lazy").setup({
    end
  },
  
- {
-   "L3MON4D3/LuaSnip",
-   tag = "v1.*"
- },
+  {
+    "L3MON4D3/LuaSnip",
+    version = "1.*",
+    build = "make install_jsregexp"
+  },
+  {
+    "rafamadriz/friendly-snippets"
+  },
  
  {
    'simrat39/rust-tools.nvim',
