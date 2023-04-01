@@ -24,3 +24,15 @@ ln -fs (realpath alacritty.yml) ~/.config/alacritty/alacritty.yml
 if test ! -e ~/.alacritty-colorscheme
   git clone https://github.com/eendroroy/alacritty-theme.git ~/.alacritty-colorscheme
 end 
+
+ln -fs (realpath git/gitconfig) ~/.gitconfig
+
+set uname (uname)
+if [ "$uname" = "Darwin" ]
+  mkdir -p ~/Library/Application\ Support/lazygit
+  ln -fs (realpath lazygit/config.yml) ~/Library/Application\ Support/lazygit/config.yml
+else
+  mkdir -p ~/.config/lazygit
+  ln -fs (realpath alacritty.yml) ~/.config/lazygit/config.yml
+end
+

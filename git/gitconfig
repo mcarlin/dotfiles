@@ -1,0 +1,11 @@
+[user]
+  name = Mike Carlin
+
+[core]
+  editor = nvim
+
+[include]
+  path = ~/.gitconfiglocal
+
+[include]
+  path = ~/dotfiles/git/diff
