@@ -44,7 +44,7 @@ require("lazy").setup({
    tag = '0.1.1',
    event = "VeryLazy",
    dependencies = { { 'nvim-lua/plenary.nvim' }, { 'smartpde/telescope-recent-files' },
-     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' } },
+     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, {'kdheepak/lazygit.nvim'} },
    config = function()
      local builtin = require('telescope.builtin')
      vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -91,7 +91,6 @@ require("lazy").setup({
      }
      telescope.load_extension('fzf')
      telescope.load_extension("recent_files")
-     --telescope.load_extension('projects')
  
      -- Telescope Recent Files Extension
      vim.api.nvim_set_keymap("n", "<leader><cr>",
@@ -99,9 +98,17 @@ require("lazy").setup({
        { noremap = true, silent = true })
  
      -- Telescope Project Extension
+     telescope.load_extension('projects')
      vim.api.nvim_set_keymap("n", "<leader>fp",
        [[<cmd>lua require'telescope'.extensions.projects.projects{}<CR>]],
        { noremap = true, silent = true })
+       
+    -- Telescope Lazygit Extension
+     telescope.load_extension("lazygit")
+     vim.api.nvim_set_keymap("n", "<leader>fv",
+       [[<cmd>lua require'telescope'.extensions.lazygit.lazygit()<CR>]],
+       { noremap = true, silent = true })
+
    end
  },
  
