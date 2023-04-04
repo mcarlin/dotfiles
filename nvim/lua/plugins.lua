@@ -132,22 +132,19 @@ require("lazy").setup({
      })
    end
  },
- 
- {
-   'nvim-tree/nvim-tree.lua',
-   dependencies = { 'kyazdani42/nvim-web-devicons', opt = true },
-   config = function()
-     require("nvim-tree").setup({
-       sync_root_with_cwd = true,
-       respect_buf_cwd = true,
-       -- update_focd_file = {
-       --   enable = true,
-       --   update_root = true
-       -- },
-     })
-     vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle <CR>', { noremap = true, silent = true })
-   end
- },
+  {
+  "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    dependencies = { 
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
+    config = function() 
+      vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
+      vim.keymap.set('n', '<leader>tt', ':Neotree<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>tg', ':Neotree float git_status<CR>', { noremap = true, silent = true })
+    end
+  },
  
  {
    'windwp/nvim-autopairs',
