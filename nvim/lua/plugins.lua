@@ -349,8 +349,10 @@ require("lazy").setup({
  
  {
    'mfussenegger/nvim-dap',
-   dependencies = { 'rcarriga/nvim-dap-ui' },
+    dependencies = { 'rcarriga/nvim-dap-ui', 'williamboman/mason.nvim' },
    config = function()
+      local extension_path = require('mason-registry').get_package('codelldb'):get_install_path()
+      local codelldb_path = extension_path .. '/extension/adapter/codelldb'
      require("dapui").setup()
  
      local dap, dapui = require("dap"), require("dapui")
@@ -363,6 +365,16 @@ require("lazy").setup({
      dap.listeners.before.event_exited["dapui_config"] = function()
        dapui.close()
      end
+      dap.adapters.codelldb = {
+        type = 'server',
+        port = "${port}",
+        executable = {
+          command = codelldb_path,
+          args = { "--port", "${port}" },
+        }
+      }
+
+      require('dap.ext.vscode').load_launchjs(nil, { codelldb = { 'rust' } })
    end
  },
  

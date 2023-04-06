@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "name": "Remote launch",
+        "type": "codelldb",
+        "request": "launch",
+        "program": "${workspaceFolder}/${input:executable}",
+        "initCommands": [
+            "platform select remote-linux",
+            "platform connect connect://${input:hostname}:${input:port}",
+            "settings set target.inherit-env false"
+        ],
+        "env": {
+        }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "executable",
+      "type": "promptString",
+      "description": "Executable: ",
+      "default": "target/release/REPLACEME"
+    },
+    {
+      "id": "hostname",
+      "type": "promptString",
+      "description": "Hostname: ",
+      "default": "REPLACEME"
+    },
+    {
+      "id": "port",
+      "type": "promptString",
+      "description": "Port: ",
+      "default": "REPLACEME"
+    }
+  ]
+}
