@@ -660,8 +660,43 @@ require("lazy").setup({
              ["<leader>sA"] = "@parameter.inner",
            },
          },
-       },
-     })
+          move = {
+            enable = true,
+            set_jumps = true, -- whether to set jumps in the jumplist
+            -- Below will go to either the start or the end, whichever is closer.
+            -- Use if you want more granular movements
+            -- Make it even more gradual by adding multiple queries and regex.
+            goto_next_start = {
+              ["]f"] = "@function.outer",
+              ["]c"] = "@class.outer",
+              ["]b"] = "@block.outer",
+              ["]p"] = "@parameter.outer",
+            },
+            goto_next_end = {
+              ["]F"] = "@function.outer",
+              ["]C"] = "@class.outer",
+              ["]B"] = "@block.outer",
+              ["]P"] = "@parameter.outer",
+            },
+            goto_previous_start = {
+              ["[f"] = "@function.outer",
+              ["[c"] = "@class.outer",
+              ["[b"] = "@block.outer",
+              ["[p"] = "@parameter.outer",
+            },
+            goto_previous_end = {
+              ["[F"] = "@function.outer",
+              ["[C"] = "@class.outer",
+              ["[B"] = "@block.outer",
+              ["[P"] = "@parameter.outer",
+            }
+          }
+        },
+      })
+      local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+
+      -- Repeat movement with ; and , ensure ; goes forward and , goes backward regardless of the last direction
+      vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
    end
  },
  {
