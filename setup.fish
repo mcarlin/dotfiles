@@ -11,6 +11,7 @@ mkdir -p ~/.config/nvim/lua
 ln -fs (realpath nvim/init.vim) ~/.config/nvim/init.vim
 ln -fs (realpath nvim/lua/base.lua) ~/.config/nvim/lua/base.lua
 ln -fs (realpath nvim/lua/plugins.lua) ~/.config/nvim/lua/plugins.lua
+ln -fs (realpath nvim/lua/util.lua) ~/.config/nvim/lua/util.lua
 
 mkdir -p ~/.config/kitty
 ln -fs (realpath kitty.conf) ~/.config/kitty/kitty.conf

@@ -12,6 +12,7 @@ set -x NVM_DIR ~/.nvm
 nvm use default --silent
 
 alias vim "nvim"
+alias nv "nvim"
 
 function wr -a FILE COMMAND
   fswatch -o $FILE | xargs -n1 -I{} /bin/sh -c "echo -n Rerunning '$COMMAND'...; $COMMAND; echo done."

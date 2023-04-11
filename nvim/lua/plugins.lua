@@ -1,3 +1,5 @@
+require("util")
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -52,6 +54,7 @@ require("lazy").setup({
       { '<leader><cr>', desc = "Find recent files" },
       { '<leader>fp',   desc = "Find recent projects" },
       { '<leader>fv',   desc = "Find git repos" },
+      { '<leader>fm',   desc = "Find git repos" },
     },
     dependencies = { { 'nvim-lua/plenary.nvim' }, { 'smartpde/telescope-recent-files' },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, { 'kdheepak/lazygit.nvim' } },
@@ -64,6 +67,7 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, {})
       vim.keymap.set('n', '<leader>fS', builtin.lsp_workspace_symbols, {})
       vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
+      vim.keymap.set('n', '<leader>fm', builtin.marks, {})
       builtin.buffers({ sort_lastd = true, ignore_current_buffer = true })
 
       local telescope = require('telescope')
@@ -234,52 +238,36 @@ require("lazy").setup({
     'neovim/nvim-lspconfig',
     dependencies = { { 'hrsh7th/cmp-nvim-lsp' }, { 'saadparwaiz1/cmp_luasnip' },
       { 'joechrisellis/lsp-format-modifications.nvim' } },
-    keys = {
-      { '<space>e',  desc = "Open diagnostic floating" },
-      { '[d',        desc = "Go to previous diagnostic" },
-      { ']d',        desc = "Go to next diagnostic" },
-      { '<space>q',  desc = "Set diagnostic location list" },
-      { 'gD',        desc = "Go to declaration" },
-      { 'gd',        desc = "Go to definition" },
-      { 'gr',        desc = "Go to references" },
-      { 'gi',        desc = "Go to implemenation" },
-      { 'K',         desc = "Lsp hover" },
-      { '<C-k>',     desc = "Lsp signature help" },
-      { '<space>wa', desc = "Add workspace folder" },
-      { '<space>wr', desc = "Remove workspace folder" },
-      { '<space>wl', desc = "List workspace folders" },
-      { '<leader>r', desc = "Lsp Rename" },
-      { '<leader>a', desc = "Lsp code action" },
-      { '<space>f',  desc = "Format" },
-    },
     config = function()
       local lspconfig = require('lspconfig')
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local opts = { noremap = true, silent = true }
-      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-      vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, merge(opts, { desc = "Open diagnostic floating" }))
+      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, merge(opts, { desc = "Go to previous diagnostic" }))
+      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, merge(opts, { desc = "Go to next diagnostic" }))
       local on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
         local lsp_format_modifications = require "lsp-format-modifications"
         lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
         local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, merge(bufopts, { desc = "Go to declaration" }))
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, merge(bufopts, { desc = "Go to definition" }))
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, merge(bufopts, { desc = "Go to references" }))
+        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, merge(bufopts, { "Go to type definition" }))
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, merge(bufopts, { desc = "Lsp hover" }))
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, merge(bufopts, { desc = "Go to implemenation" }))
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, merge(bufopts, { desc = "Lsp signature help" }))
+        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder,
+        merge(bufopts, { desc = "Add workspace folder" }))
+        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder,
+        merge(bufopts, { desc = "Remove workspace folder" }))
         vim.keymap.set('n', '<space>wl', function()
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
-        vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
-        vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+        end, merge(bufopts, { desc = "List workspace folders" }))
+        vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, merge(bufopts, { desc = "Lsp Rename" }))
+        vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, merge(bufopts, { desc = "Lsp code action" }))
+        vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end,
+        merge(bufopts, { desc = "Format" }))
         if client.server_capabilities.documentSymbolProvider then
           local navic = require("nvim-navic")
           navic.attach(client, bufnr)
@@ -325,26 +313,8 @@ require("lazy").setup({
   },
   {
     'simrat39/rust-tools.nvim',
+    ft = "rust",
     dependencies = "williamboman/mason.nvim",
-    keys = {
-      { '<space>e',  desc = "Open diagnostic floating" },
-      { '[d',        desc = "Go to previous diagnostic" },
-      { ']d',        desc = "Go to next diagnostic" },
-      { '<space>q',  desc = "Set diagnostic location list" },
-      { 'gD',        desc = "Go to declaration" },
-      { 'gd',        desc = "Go to definition" },
-      { 'gr',        desc = "Go to references" },
-      { 'gi',        desc = "Go to implemenation" },
-      { 'K',         desc = "Lsp hover" },
-      { '<C-k>',     desc = "Lsp signature help" },
-      { '<space>wa', desc = "Add workspace folder" },
-      { '<space>wr', desc = "Remove workspace folder" },
-      { '<space>wl', desc = "List workspace folders" },
-      { '<leader>r', desc = "Lsp Rename" },
-      { '<C-space>', desc = "Hover actions" },
-      { '<leader>a', desc = "Lsp code action" },
-      { '<space>f',  desc = "Format" },
-    },
     config = function()
       local extension_path = require('mason-registry').get_package('codelldb'):get_install_path()
 
@@ -371,26 +341,32 @@ require("lazy").setup({
             vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
             local bufopts = { noremap = true, silent = true, buffer = bufnr }
-            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-            vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-            vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, bufopts)
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-            vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-            vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-            vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+            vim.keymap.set('n', '<space>e', vim.diagnostic.open_float,
+            merge(bufopts, { desc = "Open diagnostic floating" }))
+            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, merge(bufopts, { desc = "Go to prev diagnostic" }))
+            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, merge(bufopts, { desc = "Go to next diagnostic" }))
+
+            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, merge(bufopts, { desc = "Go to declaration" }))
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, merge(bufopts, { desc = "Go to definition" }))
+            vim.keymap.set('n', 'gr', vim.lsp.buf.references, merge(bufopts, { desc = "Go to references" }))
+            vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, merge(bufopts, { desc = "Go to type definition" }))
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, merge(bufopts, { desc = "Lsp hover" }))
+            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, merge(bufopts, { desc = "Go to implemenation" }))
+            vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, merge(bufopts, { desc = "Lsp signature help" }))
+            vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder,
+            merge(bufopts, { desc = "Add workspace folder" }))
+            vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder,
+            merge(bufopts, { desc = "Remove workspace folder" }))
             vim.keymap.set('n', '<space>wl', function()
               print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            end, bufopts)
-            vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
-            vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, bufopts)
-            vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+            end, merge(bufopts, { desc = "List workspace folders" }))
+            vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, merge(bufopts, { desc = "Lsp Rename" }))
+            vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, merge(bufopts, { desc = "Lsp code action" }))
+            vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end,
+            merge(bufopts, { desc = "Format" }))
 
-            -- if client.server_capabilities.documentSymbolProvider then
             local navic = require("nvim-navic")
             navic.attach(client, bufnr)
-            -- end
           end,
         },
         dap = {
@@ -573,7 +549,8 @@ require("lazy").setup({
   {
     'numToStr/Comment.nvim',
     keys = {
-      { "gcc", desc = "Toggle line comment" }
+      { "gcc", desc = "Toggle line comment" },
+      { "gc",  { mode = "v" },              desc = "Toggle line comment visual" }
     },
     config = function()
       require('Comment').setup()
@@ -610,22 +587,6 @@ require("lazy").setup({
   },
   {
     'lewis6991/gitsigns.nvim',
-    keys = {
-      { "<leader>rr", desc = "Git next changed hunk" },
-      { "<leader>ee", desc = "Git previous changed hunk" },
-      { "<leader>hs", desc = "Git stage hunk" },
-      { "<leader>hr", desc = "Git reset hunk" },
-      { "<leader>hS", desc = "Git stage buffer" },
-      { "<leader>hu", desc = "Git undo stage hunk" },
-      { "<leader>hR", desc = "Git reset buffer" },
-      { "<leader>hp", desc = "Git preview hunk" },
-      { "<leader>hb", desc = "Git blame line" },
-      { "<leader>tb", desc = "Git toggle blame line" },
-      { "<leader>hd", desc = "Git diff this" },
-      { "<leader>hD", desc = "Git diff this ~" },
-      { "<leader>tD", desc = "Git toggle deleted" },
-      { "ih",         desc = "Git textobj in hunk" },
-    },
     config = function()
       require('gitsigns').setup {
         on_attach = function(bufnr)
@@ -635,31 +596,31 @@ require("lazy").setup({
             opts.buffer = bufnr
             vim.keymap.set(mode, l, r, opts)
           end
-          -- Navigation
+          -- navigation
           map('n', '<leader>rr', function()
             if vim.wo.diff then return ']c' end
             vim.schedule(function() gs.next_hunk() end)
-            return '<Ignore>'
-          end, { expr = true })
+            return '<ignore>'
+          end, { expr = true, desc = "git next changed hunk" })
           map('n', '<leader>ee', function()
             if vim.wo.diff then return '[c' end
             vim.schedule(function() gs.prev_hunk() end)
-            return '<Ignore>'
-          end, { expr = true })
-          -- Actions
-          map({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-          map({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-          map('n', '<leader>hS', gs.stage_buffer)
-          map('n', '<leader>hu', gs.undo_stage_hunk)
-          map('n', '<leader>hR', gs.reset_buffer)
-          map('n', '<leader>hp', gs.preview_hunk)
-          map('n', '<leader>hb', function() gs.blame_line { full = true } end)
-          map('n', '<leader>tb', gs.toggle_current_line_blame)
-          map('n', '<leader>hd', gs.diffthis)
-          map('n', '<leader>hD', function() gs.diffthis('~') end)
-          map('n', '<leader>td', gs.toggle_deleted)
-          -- Text object
-          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+            return '<ignore>'
+          end, { expr = true, desc = "git previous changed hunk" })
+          -- actions
+          map({ 'n', 'v' }, '<leader>hs', ':gitsigns stage_hunk<cr>', { desc = "git stage hunk" })
+          map({ 'n', 'v' }, '<leader>hr', ':gitsigns reset_hunk<cr>', { desc = "git reset hunk" })
+          map('n', '<leader>hs', gs.stage_buffer, { desc = "git stage buffer" })
+          map('n', '<leader>hu', gs.undo_stage_hunk, { desc = "git undo stage hunk" })
+          map('n', '<leader>hr', gs.reset_buffer, { desc = "git reset buffer" })
+          map('n', '<leader>hp', gs.preview_hunk, { desc = "git preview hunk" })
+          map('n', '<leader>hb', function() gs.blame_line { full = true } end, { desc = "git blame line" })
+          map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = "git toggle blame line" })
+          map('n', '<leader>hd', gs.diffthis, { desc = "git diff this" })
+          map('n', '<leader>hD', function() gs.diffthis('~') end, { desc = "git diff this ~" })
+          map('n', '<leader>td', gs.toggle_deleted, { desc = "git toggle deleted" })
+          -- text object
+          map({ 'o', 'x' }, 'ih', ':<c-u>gitsigns select_hunk<cr>', { desc = "git textobj in hunk" })
         end
       }
     end
@@ -702,8 +663,7 @@ require("lazy").setup({
   {
     "stevearc/aerial.nvim",
     keys = {
-      { '<leader>ta', '<cmd>AerialToggle!<CR>', desc = "Toggle aerial document structure" }
-
+      { '<leader>ta', '<cmd>AerialToggle!<cr>', desc = "toggle aerial document structure" }
     },
     config = function()
       require('aerial').setup()
@@ -719,42 +679,15 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     dependencies = "nvim-treesitter/nvim-treesitter",
-    keys = {
-      { "af",         { mode = "v" },                   desc = "Visual around function" },
-      { "if",         { mode = "v" },                   desc = "Visual in function" },
-      { "ac",         { mode = "v" },                   desc = "Visual around class" },
-      { "ic",         { mode = "v" },                   desc = "Visual in class" },
-      { "ab",         { mode = "v" },                   desc = "Visual around block" },
-      { "ib",         { mode = "v" },                   desc = "Visual in block", },
-      { "<leader>sa", desc = "Swap next parameter", },
-      { "<leader>sA", desc = "Swap previous parameter", },
-      { "]f",         desc = "Next function start" },
-      { "]c",         desc = "Next class start" },
-      { "]b",         desc = "Next block start" },
-      { "]p",         desc = "Next parameter start" },
-      { "]F",         desc = "Next function end" },
-      { "]C",         desc = "Next class end" },
-      { "]B",         desc = "Next block end" },
-      { "]P",         desc = "Next parameter end" },
-      { "[f",         desc = "Previous function start" },
-      { "[c",         desc = "Previous class start" },
-      { "[b",         desc = "Previous block start" },
-      { "[p",         desc = "Previous parameter start" },
-      { "[F",         desc = "Previous function end" },
-      { "[C",         desc = "Previous class end" },
-      { "[B",         desc = "Previous block end" },
-      { "[P",         desc = "Previous parameter end" },
-
-    },
     config = function()
       require('nvim-treesitter.configs').setup({
         textobjects = {
           select = {
             enable = true,
-            -- Automatically jump forward to textobj, similar to targets.vim
+            -- automatically jump forward to textobj, similar to targets.vim
             lookahead = true,
             keymaps = {
-              -- You can the capture groups defined in textobjects.scm
+              -- you can the capture groups defined in textobjects.scm
               ["af"] = "@function.outer",
               ["if"] = "@function.inner",
               ["ac"] = "@class.outer",
@@ -771,15 +704,15 @@ require("lazy").setup({
               ["<leader>sa"] = "@parameter.inner",
             },
             swap_previous = {
-              ["<leader>sA"] = "@parameter.inner",
+              ["<leader>sa"] = "@parameter.inner",
             },
           },
           move = {
             enable = true,
             set_jumps = true, -- whether to set jumps in the jumplist
-            -- Below will go to either the start or the end, whichever is closer.
-            -- Use if you want more granular movements
-            -- Make it even more gradual by adding multiple queries and regex.
+            -- below will go to either the start or the end, whichever is closer.
+            -- use if you want more granular movements
+            -- make it even more gradual by adding multiple queries and regex.
             goto_next_start = {
               ["]f"] = "@function.outer",
               ["]c"] = "@class.outer",
@@ -787,10 +720,10 @@ require("lazy").setup({
               ["]p"] = "@parameter.outer",
             },
             goto_next_end = {
-              ["]F"] = "@function.outer",
-              ["]C"] = "@class.outer",
-              ["]B"] = "@block.outer",
-              ["]P"] = "@parameter.outer",
+              ["]f"] = "@function.outer",
+              ["]c"] = "@class.outer",
+              ["]b"] = "@block.outer",
+              ["]p"] = "@parameter.outer",
             },
             goto_previous_start = {
               ["[f"] = "@function.outer",
@@ -799,17 +732,17 @@ require("lazy").setup({
               ["[p"] = "@parameter.outer",
             },
             goto_previous_end = {
-              ["[F"] = "@function.outer",
-              ["[C"] = "@class.outer",
-              ["[B"] = "@block.outer",
-              ["[P"] = "@parameter.outer",
+              ["[f"] = "@function.outer",
+              ["[c"] = "@class.outer",
+              ["[b"] = "@block.outer",
+              ["[p"] = "@parameter.outer",
             }
           }
         },
       })
       local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
 
-      -- Repeat movement with ; and , ensure ; goes forward and , goes backward regardless of the last direction
+      -- repeat movement with ; and , ensure ; goes forward and , goes backward regardless of the last direction
       vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
     end
   },
@@ -867,6 +800,26 @@ require("lazy").setup({
         },
       })
     end
+  },
+  {
+    'chentoast/marks.nvim',
+    opts = {
+      default_mappings = true,
+      builtin_marks = { ".", "<", ">", "^" },
+      cyclic = true,
+      force_write_shada = false,
+      refresh_interval = 250,
+      sign_priority = { lower = 10, upper = 15, builtin = 8, bookmark = 20 },
+      excluded_filetypes = {},
+      bookmark_0 = {
+        sign = "⚑",
+        virt_text = "hello world",
+        -- explicitly prompt for a virtual line annotation when setting a bookmark from this group.
+        -- defaults to false.
+        annotate = false,
+      },
+      mappings = {}
+    }
   }
 }
 )
