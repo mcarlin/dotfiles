@@ -320,8 +320,7 @@ require("lazy").setup({
     ft = "rust",
     dependencies = "williamboman/mason.nvim",
     config = function()
-      local extension_path = require('mason-registry').get_package('codelldb'):get_install_path()
-
+      local extension_path = require('mason-registry').get_package('codelldb'):get_install_path() .. '/extension/'
 
       local codelldb_path = extension_path .. 'adapter/codelldb'
       local liblldb_path = ''
@@ -405,6 +404,7 @@ require("lazy").setup({
       dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
+
       dap.adapters.codelldb = {
         type = 'server',
         port = "${port}",
@@ -413,6 +413,34 @@ require("lazy").setup({
           args = { "--port", "${port}" },
         }
       }
+
+      vim.keymap.set('n', '<F5>', function() require('dap').continue() end, { desc = "Debug continue" })
+      vim.keymap.set('n', '<F8>', function() require('dap').step_over() end, { desc = "Debug step over" })
+      vim.keymap.set('n', '<F7>', function() require('dap').step_into() end, { desc = "Debug step into" })
+      vim.keymap.set('n', '<F9>', function() require('dap').step_out() end, { desc = "Debug step out" })
+      vim.keymap.set('n', '<Leader>db', function() require('dap').toggle_breakpoint() end,
+        { desc = "Debug toggle breakpoint" })
+      vim.keymap.set('n', '<Leader>dB', function() require('dap').set_breakpoint() end, { desc = "Debug set breakpoint" })
+      vim.keymap.set('n', '<Leader>lp',
+        function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
+        { desc = "Debug log point message" })
+      vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end, { desc = "Debug open repl" })
+      vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end, { desc = "Debug run last config" })
+      vim.keymap.set('n', '<Leader>dx', function() require('dap').disconnect() end, { desc = "Debug disconnect" })
+      vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
+        require('dap.ui.widgets').hover()
+      end, { desc = "Debug hover" })
+      vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
+        require('dap.ui.widgets').preview()
+      end, { desc = "Debug preview" })
+      vim.keymap.set('n', '<Leader>df', function()
+        local widgets = require('dap.ui.widgets')
+        widgets.centered_float(widgets.frames)
+      end, { desc = "Debug centered float frames" })
+      vim.keymap.set('n', '<Leader>ds', function()
+        local widgets = require('dap.ui.widgets')
+        widgets.centered_float(widgets.scopes)
+      end, { desc = "Debug centered float scopes" })
 
       require('dap.ext.vscode').load_launchjs(nil, { codelldb = { 'rust' } })
     end
