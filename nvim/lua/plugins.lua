@@ -247,13 +247,11 @@ require("lazy").setup({
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, merge(opts, { desc = "Go to next diagnostic" }))
       local on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-        local lsp_format_modifications = require "lsp-format-modifications"
-        lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
         local bufopts = { noremap = true, silent = true, buffer = bufnr }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, merge(bufopts, { desc = "Go to declaration" }))
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, merge(bufopts, { desc = "Go to definition" }))
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, merge(bufopts, { desc = "Go to references" }))
-        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, merge(bufopts, { "Go to type definition" }))
+--        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, merge(bufopts, { "Go to type definition" }))
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, merge(bufopts, { desc = "Lsp hover" }))
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, merge(bufopts, { desc = "Go to implemenation" }))
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, merge(bufopts, { desc = "Lsp signature help" }))
@@ -268,7 +266,13 @@ require("lazy").setup({
         vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, merge(bufopts, { desc = "Lsp code action" }))
         vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end,
         merge(bufopts, { desc = "Format" }))
+        if client.server_capabilities.documentRangeFormattingProvider then
+          local lsp_format_modifications = require "lsp-format-modifications"
+          lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
+        end
+
         if client.server_capabilities.documentSymbolProvider then
+
           local navic = require("nvim-navic")
           navic.attach(client, bufnr)
         end
@@ -278,7 +282,7 @@ require("lazy").setup({
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'pyright', 'tsserver', 'taplo', 'sqlls' }
+      local servers = { 'clangd', 'pyright', 'tsserver', 'taplo', 'sqlls', 'bashls' }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
