@@ -11,8 +11,14 @@ end
 set -x NVM_DIR ~/.nvm
 nvm use default --silent
 
-alias vim "nvim"
-alias nv "nvim"
+if type nvim -sq
+  alias vim "nvim"
+  alias nv "nvim"
+end
+
+if type bat -sq
+  alias cat "bat --paging=never --theme=gruvbox-dark --tabs=2"
+end
 
 function wr -a FILE COMMAND
   fswatch -o $FILE | xargs -n1 -I{} /bin/sh -c "echo -n Rerunning '$COMMAND'...; $COMMAND; echo done."
