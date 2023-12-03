@@ -37,3 +37,6 @@ else
   ln -fs (realpath alacritty.yml) ~/.config/lazygit/config.yml
 end
 
+mkdir -p ~/.config/zellij
+ln -fs (realpath zellij/config.kdl) ~/.config/zellij/config.kdl
+
