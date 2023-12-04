@@ -569,7 +569,7 @@ require("lazy").setup({
   {
     'p00f/clangd_extensions.nvim',
     config = function()
-      require("clangd_extensions").prepare()
+      require("clangd_extensions").setup()
     end
   },
   {
