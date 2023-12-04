@@ -602,21 +602,7 @@ require("lazy").setup({
     'romgrk/barbar.nvim',
     dependencies = 'nvim-web-devicons'
   },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function()
-      vim.opt.list = true
-      vim.opt.listchars:append "space:⋅"
-      vim.opt.listchars:append "eol:↴"
-      require("indent_blankline").setup {
-        space_char_blankline = " ",
-        _treesitter_scope = true,
-        show_end_of_line = true,
-        show_current_context = true,
-        show_current_context_start = true,
-      }
-    end
-  },
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
   {
     'lewis6991/gitsigns.nvim',
     config = function()
