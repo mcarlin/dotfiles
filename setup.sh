@@ -7,6 +7,7 @@ ln -fs $(realpath nvim/init.vim) ~/.config/nvim/init.vim
 ln -fs $(realpath nvim/lua/base.lua) ~/.config/nvim/lua/base.lua
 ln -fs $(realpath nvim/lua/plugins.lua) ~/.config/nvim/lua/plugins.lua
 ln -fs $(realpath nvim/lua/util.lua) ~/.config/nvim/lua/util.lua
+ln -fs $(realpath nvim/lazy-lock.json) ~/.config/nvim/lazy-lock.json
 
 ln -fs (realpath git/gitconfig) ~/.gitconfig
 
