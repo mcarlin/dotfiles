@@ -102,6 +102,8 @@ elseif exists('g:vscode') """ VSCode
 "
 "  map <leader>b <Action>(ToggleLineBreakpoint)
 
+" Fix vscode highlighting issue
+set colorcolumn=
 
 else """ Vanilla
 
