@@ -63,6 +63,7 @@ if has('ide') """ IDEA
   map <leader><enter> <Action>(Switcher)
 
   map <leader>b <Action>(ToggleLineBreakpoint)
+  map <leader>m <Action>(ToggleBookmark)
   map <leader>xx <Action>(ActivateProblemsViewToolWindow)
 
   map <leader>tt <Action>(ActivateProjectToolWindow)
