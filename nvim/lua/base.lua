@@ -19,3 +19,5 @@ vim.o.smartindent = true
 
 -- Clipboard uses system
 vim.opt.clipboard = 'unnamedplus'
+
+vim.o.linebreak = true

@@ -10,6 +10,15 @@ set nu
 " Make leader+tab switch between most recent buffer
 map <leader><tab> :b#<cr>
 
+nnoremap j gj
+vnoremap j gj
+onoremap j gj
+nnoremap k gk
+vnoremap k gk
+onoremap k gk
+nnoremap 0 g0
+nnoremap $ g$
+
 "==============================
 " Environment Specific Settings
 "==============================
