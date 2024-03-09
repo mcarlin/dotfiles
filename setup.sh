@@ -14,3 +14,5 @@ ln -fs (realpath git/gitconfig) ~/.gitconfig
 mkdir -p ~/.config/lazygit/
 ln -fs $(realpath lazygit/config.yml) ~/.config/lazygit/config.yml
 
+mkdir -p ~/.config/borders
+ln -fs $(realpath bordersrc) ~/.config/borders/bordersrc
