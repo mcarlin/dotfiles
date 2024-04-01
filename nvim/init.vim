@@ -29,7 +29,8 @@ if has('ide') """ IDEA
   set surround
   set multiple-cursors
   set argtextobj
-  set easymotion
+  set sneak
+  set quickscope
   set textobj-entire
   set ReplaceWithRegister
   set highlightedyank
