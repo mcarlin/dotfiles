@@ -1,5 +1,3 @@
-starship init fish | source
-
 if status is-interactive
     # Commands to run in interactive sessions can go here
 end
@@ -22,4 +20,9 @@ end
 
 function wr -a FILE COMMAND
   fswatch -o $FILE | xargs -n1 -I{} /bin/sh -c "echo -n Rerunning '$COMMAND'...; $COMMAND; echo done."
+end
+
+function gitdbf --description "Deletes a git branch both locally (forced) and remotely" -a BRANCH -w "git branch"
+  git push -d origin $BRANCH
+  git branch -D $BRANCH
 end
