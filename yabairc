@@ -20,8 +20,8 @@ yabai -m rule --add title='Preferences$' manage=off
 
 yabai -m rule --add title='Settings$' manage=off
 
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand)$' title='Project Structure' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand)$' title='Preferences' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand)$' title='Edit configuration' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand)$' title='Terminal' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand)$' title='Run/Debug Configurations' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Project Structure' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Preferences' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Edit configuration' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Terminal' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Run/Debug Configurations' manage=off
