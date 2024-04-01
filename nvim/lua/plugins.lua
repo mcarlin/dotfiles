@@ -57,7 +57,7 @@ require("lazy").setup({
       { '<leader>fm',   desc = "Find git repos" },
     },
     dependencies = { { 'nvim-lua/plenary.nvim' }, { 'smartpde/telescope-recent-files' },
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, { 'kdheepak/lazygit.nvim' } },
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, { 'kdheepak/lazygit.nvim' } },
     config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -108,20 +108,20 @@ require("lazy").setup({
 
       -- Telescope Recent Files Extension
       vim.api.nvim_set_keymap("n", "<leader><cr>",
-        [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
-        { noremap = true, silent = true })
+      [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
+      { noremap = true, silent = true })
 
       -- Telescope Project Extension
       telescope.load_extension('projects')
       vim.api.nvim_set_keymap("n", "<leader>fp",
-        [[<cmd>lua require'telescope'.extensions.projects.projects{}<CR>]],
-        { noremap = true, silent = true })
+      [[<cmd>lua require'telescope'.extensions.projects.projects{}<CR>]],
+      { noremap = true, silent = true })
 
       -- Telescope Lazygit Extension
       telescope.load_extension("lazygit")
       vim.api.nvim_set_keymap("n", "<leader>fv",
-        [[<cmd>lua require'telescope'.extensions.lazygit.lazygit()<CR>]],
-        { noremap = true, silent = true })
+      [[<cmd>lua require'telescope'.extensions.lazygit.lazygit()<CR>]],
+      { noremap = true, silent = true })
     end
   },
   {
@@ -180,8 +180,8 @@ require("lazy").setup({
       local cmp_autopairs = require('nvim-autopairs.completion.cmp')
       local cmp = require('cmp')
       cmp.event:on(
-        'confirm_done',
-        cmp_autopairs.on_confirm_done()
+      'confirm_done',
+      cmp_autopairs.on_confirm_done()
       )
       local luasnip = require 'luasnip'
 
@@ -237,7 +237,7 @@ require("lazy").setup({
   {
     'neovim/nvim-lspconfig',
     dependencies = { { 'hrsh7th/cmp-nvim-lsp' }, { 'saadparwaiz1/cmp_luasnip' },
-      { 'joechrisellis/lsp-format-modifications.nvim' } },
+    { 'joechrisellis/lsp-format-modifications.nvim' } },
     config = function()
       local lspconfig = require('lspconfig')
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -251,7 +251,7 @@ require("lazy").setup({
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, merge(bufopts, { desc = "Go to declaration" }))
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, merge(bufopts, { desc = "Go to definition" }))
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, merge(bufopts, { desc = "Go to references" }))
---        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, merge(bufopts, { "Go to type definition" }))
+        --        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, merge(bufopts, { "Go to type definition" }))
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, merge(bufopts, { desc = "Lsp hover" }))
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, merge(bufopts, { desc = "Go to implemenation" }))
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, merge(bufopts, { desc = "Lsp signature help" }))
@@ -374,7 +374,7 @@ require("lazy").setup({
         },
         dap = {
           adapter = require('rust-tools.dap').get_codelldb_adapter(
-            codelldb_path, liblldb_path)
+          codelldb_path, liblldb_path)
         },
         settings = {
           ['rust-analyzer'] = {
@@ -419,11 +419,11 @@ require("lazy").setup({
       vim.keymap.set('n', '<F7>', function() require('dap').step_into() end, { desc = "Debug step into" })
       vim.keymap.set('n', '<F9>', function() require('dap').step_out() end, { desc = "Debug step out" })
       vim.keymap.set('n', '<Leader>db', function() require('dap').toggle_breakpoint() end,
-        { desc = "Debug toggle breakpoint" })
+      { desc = "Debug toggle breakpoint" })
       vim.keymap.set('n', '<Leader>dB', function() require('dap').set_breakpoint() end, { desc = "Debug set breakpoint" })
       vim.keymap.set('n', '<Leader>lp',
-        function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
-        { desc = "Debug log point message" })
+      function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
+      { desc = "Debug log point message" })
       vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end, { desc = "Debug open repl" })
       vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end, { desc = "Debug run last config" })
       vim.keymap.set('n', '<Leader>dx', function() require('dap').disconnect() end, { desc = "Debug disconnect" })
@@ -793,6 +793,21 @@ require("lazy").setup({
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
+  },
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+    config = true,
+    keys = {
+      { "<leader>vo", "<cmd>Neogit<cr>", { silent = true, noremap = true }, desc = "Toggle neogit" },
+      { "<leader>vc", "<cmd>Neogit commit<cr>", { silent = true, noremap = true }, desc = "Toggle neogit" },
+    },
+
   }
 }
 )
