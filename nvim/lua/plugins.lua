@@ -388,7 +388,7 @@ require("lazy").setup({
   },
   {
     'mfussenegger/nvim-dap',
-    dependencies = { 'rcarriga/nvim-dap-ui', 'williamboman/mason.nvim' },
+    dependencies = { 'rcarriga/nvim-dap-ui', 'williamboman/mason.nvim', 'nvim-neotest/nvim-nio' },
     config = function()
       local extension_path = require('mason-registry').get_package('codelldb'):get_install_path()
       local codelldb_path = extension_path .. '/extension/adapter/codelldb'
