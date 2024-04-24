@@ -282,7 +282,7 @@ require("lazy").setup({
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'pyright', 'tsserver', 'taplo', 'sqlls', 'bashls' }
+      local servers = { 'clangd', 'tsserver', 'taplo', 'sqlls', 'bashls', "gopls" }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
@@ -570,6 +570,22 @@ require("lazy").setup({
     end,
   },
   {
+    "williamboman/mason-lspconfig.nvim",
+    config = function ()
+      require("mason-lspconfig").setup {
+        ensure_installed = {
+          "bashls",
+          "clangd",
+          "gopls",
+          "lua_ls",
+          "ruff_lsp",
+          "rust_analyzer",
+          "taplo",
+        },
+      }
+    end
+  },
+  {
     'numToStr/Comment.nvim',
     keys = {
       { "gcc", desc = "Toggle line comment" },
@@ -808,6 +824,9 @@ require("lazy").setup({
       { "<leader>vc", "<cmd>Neogit commit<cr>", { silent = true, noremap = true }, desc = "Toggle neogit" },
     },
 
-  }
+  },
+  {
+    "jinh0/eyeliner.nvim",
+  },
 }
 )
