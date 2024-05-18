@@ -268,7 +268,7 @@ require("lazy").setup({
         merge(bufopts, { desc = "Format" }))
         if client.server_capabilities.documentRangeFormattingProvider then
           local lsp_format_modifications = require "lsp-format-modifications"
-          lsp_format_modifications.attach(client, bufnr, { format_on_save = false })
+          lsp_format_modifications.attach(client, bufnr, { format_on_save = true })
         end
 
         if client.server_capabilities.documentSymbolProvider then
@@ -583,16 +583,6 @@ require("lazy").setup({
           "taplo",
         },
       }
-    end
-  },
-  {
-    'numToStr/Comment.nvim',
-    keys = {
-      { "gcc", desc = "Toggle line comment" },
-      { "gc",  { mode = "v" },              desc = "Toggle line comment visual" }
-    },
-    config = function()
-      require('Comment').setup()
     end
   },
   {

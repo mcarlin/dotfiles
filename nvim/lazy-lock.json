@@ -1,5 +1,4 @@
 {
-  "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
   "LuaSnip": { "branch": "master", "commit": "500981ff6cefc7343e3959ef0f939bd0bfd49ba9" },
   "aerial.nvim": { "branch": "master", "commit": "228fad11393322537d9662c0347f75549a3d6c0a" },
   "clangd_extensions.nvim": { "branch": "main", "commit": "430a8f56605cb1d0ed9876301d6e9bf675195e16" },
