@@ -44,3 +44,4 @@ ln -fs (realpath zellij/config.kdl) ~/.config/zellij/config.kdl
 mkdir -p ~/.config/borders
 ln -fs (realpath bordersrc) ~/.config/borders/bordersrc
 
+ln -fs (realpath tridactylrc) ~/.tridactylrc

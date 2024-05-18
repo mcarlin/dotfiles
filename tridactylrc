@@ -1,0 +1,1 @@
+set editorcmd /opt/homebrew/bin/alacritty -e /opt/homebrew/bin/nvim
