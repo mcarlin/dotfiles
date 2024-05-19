@@ -272,7 +272,6 @@ require("lazy").setup({
         end
 
         if client.server_capabilities.documentSymbolProvider then
-
           local navic = require("nvim-navic")
           navic.attach(client, bufnr)
         end
@@ -669,11 +668,15 @@ require("lazy").setup({
       }
     end
   },
-
   {
     "stevearc/aerial.nvim",
+    opts = {},
     keys = {
       { '<leader>ta', '<cmd>AerialToggle!<cr>', desc = "toggle aerial document structure" }
+    },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
     },
     config = function()
       require('aerial').setup()
@@ -818,5 +821,8 @@ require("lazy").setup({
   {
     "jinh0/eyeliner.nvim",
   },
+  {
+    "nvim-treesitter/nvim-treesitter-context"
+  }
 }
 )
