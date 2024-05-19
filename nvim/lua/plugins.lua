@@ -276,13 +276,16 @@ require("lazy").setup({
           local navic = require("nvim-navic")
           navic.attach(client, bufnr)
         end
+        if client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        end
       end
 
       local lsp_flags = {
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'tsserver', 'taplo', 'sqlls', 'bashls', "gopls" }
+      local servers = { 'clangd', 'tsserver', 'taplo', 'sqlls', 'bashls' }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
@@ -303,6 +306,24 @@ require("lazy").setup({
               globals = { 'vim' }
             }
           }
+        }
+      }
+      lspconfig.gopls.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        flags = lsp_flags,
+        settings = {
+          gopls = {
+            hints = {
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
+              constantValues = true,
+              functionTypeParameters = true,
+              parameterNames = true,
+              rangeVariableTypes = true,
+            },
+          },
         }
       }
     end
