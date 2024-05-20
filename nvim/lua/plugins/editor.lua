@@ -175,4 +175,49 @@ return {
       require("luasnip/loaders/from_vscode").lazy_load()
     end
   },
+  -- linter
+  {
+    'mfussenegger/nvim-lint',
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        go = {
+          'golangcilint'
+        }
+      }
+
+      vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
+        callback = function()
+          local lint_status, linter = pcall(require, "lint")
+          if lint_status then
+            linter.try_lint()
+          end
+        end,
+      })
+    end
+  },
+  -- Formatting
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<space>f",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        go = { "gofmt" },
+        lua = { "stylua" },
+      },
+      format_on_save = { timeout_ms = 500, lsp_fallback = true },
+    },
+  }
 }

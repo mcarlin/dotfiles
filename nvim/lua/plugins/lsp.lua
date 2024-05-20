@@ -30,12 +30,6 @@ return {
         end, merge(bufopts, { desc = "List workspace folders" }))
         vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, merge(bufopts, { desc = "Lsp Rename" }))
         vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, merge(bufopts, { desc = "Lsp code action" }))
-        vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end,
-          merge(bufopts, { desc = "Format" }))
-        if client.server_capabilities.documentRangeFormattingProvider then
-          local lsp_format_modifications = require "lsp-format-modifications"
-          lsp_format_modifications.attach(client, bufnr, { format_on_save = true })
-        end
 
         if client.server_capabilities.documentSymbolProvider then
           local navic = require("nvim-navic")
