@@ -50,7 +50,7 @@ return {
     config = true,
     keys = {
       { "<leader>vo", "<cmd>Neogit<cr>",        { silent = true, noremap = true }, desc = "Toggle neogit" },
-      { "<leader>vc", "<cmd>Neogit commit<cr>", { silent = true, noremap = true }, desc = "Toggle neogit" },
+      { "<leader>vc", "<cmd>Neogit commit<cr>", { silent = true, noremap = true }, desc = "Neogit commit" },
     },
 
   },

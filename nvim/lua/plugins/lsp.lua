@@ -1,3 +1,4 @@
+require("util")
 return {
   {
     'neovim/nvim-lspconfig',
@@ -241,6 +242,14 @@ return {
   {
     "SmiteshP/nvim-navic",
     dependencies = "neovim/nvim-lspconfig",
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    version = "1.*",
+    build = "make install_jsregexp"
+  },
+  {
+    "rafamadriz/friendly-snippets"
   },
 
 }
