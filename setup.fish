@@ -7,11 +7,10 @@ ln -fs (realpath skhdrc) ~/.skhdrc
 ln -fs (realpath tmux.conf) ~/.tmux.conf
 ln -fs (realpath yabairc) ~/.yabairc
 
-mkdir -p ~/.config/nvim/lua
+mkdir -p ~/.config/nvim
 ln -fs (realpath nvim/init.vim) ~/.config/nvim/init.vim
-ln -fs (realpath nvim/lua/base.lua) ~/.config/nvim/lua/base.lua
-ln -fs (realpath nvim/lua/plugins.lua) ~/.config/nvim/lua/plugins.lua
-ln -fs (realpath nvim/lua/util.lua) ~/.config/nvim/lua/util.lua
+ln -fs (realpath nvim/init.lua) ~/.config/nvim/init.lua
+ln -fs (realpath nvim/lua) ~/.config/nvim/lua
 ln -fs (realpath nvim/lazy-lock.json) ~/.config/nvim/lazy-lock.json
 
 mkdir -p ~/.config/kitty

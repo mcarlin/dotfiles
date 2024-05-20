@@ -118,7 +118,6 @@ set colorcolumn=
 
 else """ Vanilla
 
-lua require('base')
-lua require('plugins')
+lua require("init")
 
 end
