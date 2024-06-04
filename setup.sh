@@ -4,10 +4,9 @@ ln -fs $(realpath tmux.conf) ~/.tmux.conf
 
 mkdir -p ~/.config/nvim
 ln -fs $(realpath nvim/init.vim) ~/.config/nvim/init.vim
-ln -fs $(realpath nvim/init.lua) ~/.config/nvim/init.lua
 ln -fs $(realpath nvim/lua) ~/.config/nvim/lua
+ln -fs $(realpath nvim/luasnip) ~/.config/nvim/luasnip
 ln -fs $(realpath nvim/lazy-lock.json) ~/.config/nvim/lazy-lock.json
-
 
 ln -fs $(realpath git/gitconfig) ~/.gitconfig
 

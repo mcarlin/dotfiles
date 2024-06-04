@@ -239,8 +239,19 @@ return {
   },
   {
     "L3MON4D3/LuaSnip",
-    version = "1.*",
-    build = "make install_jsregexp"
+    version = "2.*",
+    keys = {
+      { '<leader>L', '<Cmd>lua require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/luasnip/"})<CR>', desc = "reload luasnips" }
+    },
+    build = "make install_jsregexp",
+    config = function()
+      require('luasnip').config.set_config({
+        -- Enable autotriggered snippets
+        enable_autosnippets = true,
+      })
+      require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/luasnip/" })
+    end
+
   },
   {
     "rafamadriz/friendly-snippets"

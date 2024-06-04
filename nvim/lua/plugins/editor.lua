@@ -118,19 +118,14 @@ return {
   },
   { 'tpope/vim-repeat' },
   {
-    'windwp/nvim-autopairs',
+    'hrsh7th/nvim-cmp',
     event = "InsertEnter",
-    dependencies = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip', 'saecki/crates.nvim' },
+    dependencies = { 'saadparwaiz1/cmp_luasnip', 'saecki/crates.nvim' },
     config = function()
-      require("nvim-autopairs").setup {}
+      local cmp = require("cmp")
+      local luasnip = require('luasnip')
 
-      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-      local cmp = require('cmp')
-      cmp.event:on(
-        'confirm_done',
-        cmp_autopairs.on_confirm_done()
-      )
-      local luasnip = require 'luasnip'
+      require("luasnip/loaders/from_vscode").lazy_load()
 
       cmp.setup {
         snippet = {
@@ -165,14 +160,40 @@ return {
             end
           end, { 'i', 's' }),
         }),
-        sources = {
+        sources = cmp.config.sources({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'crates' },
-          { name = 'nvim_lsp_signature_help' }
-        },
+        }, {
+          { name = 'buffer' },
+        })
       }
-      require("luasnip/loaders/from_vscode").lazy_load()
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          { name = 'cmdline' }
+        }),
+        matching = { disallow_symbol_nonprefix_matching = false }
+      })
+    end
+  },
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    dependencies = { 'hrsh7th/nvim-cmp', 'saadparwaiz1/cmp_luasnip', 'saecki/crates.nvim' },
+    config = function()
+      require("nvim-autopairs").setup {}
+
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+      local cmp = require('cmp')
+      cmp.event:on(
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
+      )
     end
   },
   -- linter
