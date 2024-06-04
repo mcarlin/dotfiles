@@ -44,7 +44,7 @@ return {
         debounce_text_changes = 150,
       }
       -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-      local servers = { 'clangd', 'tsserver', 'taplo', 'sqlls', 'bashls' }
+      local servers = { 'tsserver', 'taplo', 'sqlls', 'bashls' }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           -- on_attach = my_custom_on_attach,
@@ -54,6 +54,14 @@ return {
 
         }
       end
+
+      lspconfig['clangd'].setup {
+        -- on_attach = my_custom_on_attach,
+        capabilities = capabilities,
+        on_attach = on_attach,
+        flags = lsp_flags,
+        filetypes = { "c", "cpp", "cc", "cuda", "objc", "objcpp" }
+      }
 
       lspconfig.lua_ls.setup {
         capabilities = capabilities,
