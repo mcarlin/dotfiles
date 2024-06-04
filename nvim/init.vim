@@ -70,7 +70,10 @@ if has('ide') """ IDEA
   map <leader>gi <Action>(GotoImplementation)
   map <leader>gr <Action>(FindUsages)
   map <leader>fs <Action>(FileStructurePopup)
+  map <leader>fr <Action>(GotoDeclaration)
   map <leader><enter> <Action>(Switcher)
+  map <C-o> <Action>(Back)
+  map <C-i> <Action>(Forward)
 
   map <leader>b <Action>(ToggleLineBreakpoint)
   map <leader>m <Action>(ToggleBookmark)
