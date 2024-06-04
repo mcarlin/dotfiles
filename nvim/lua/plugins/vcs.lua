@@ -22,8 +22,8 @@ return {
             return '<ignore>'
           end, { expr = true, desc = "git previous changed hunk" })
           -- actions
-          map({ 'n', 'v' }, '<leader>vbm', ':gitsign change_base origin/main true<cr>', { desc = "change base to main" })
-          map({ 'n', 'v' }, '<leader>vbr', ':gitsign reset_base true<cr>', { desc = "reset base" })
+          map({ 'n', 'v' }, '<leader>vbm', ':Gitsigns change_base origin/main true<cr>', { desc = "change base to main" })
+          map({ 'n', 'v' }, '<leader>vbr', ':Gitsigns reset_base true<cr>', { desc = "reset base" })
           map({ 'n', 'v' }, '<leader>hs', ':gitsigns stage_hunk<cr>', { desc = "git stage hunk" })
           map({ 'n', 'v' }, '<leader>hr', ':gitsigns reset_hunk<cr>', { desc = "git reset hunk" })
           map('n', '<leader>hs', gs.stage_buffer, { desc = "git stage buffer" })
