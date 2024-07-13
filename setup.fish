@@ -26,6 +26,8 @@ if test ! -e ~/.alacritty-colorscheme
   git clone https://github.com/eendroroy/alacritty-theme.git ~/.alacritty-colorscheme
 end 
 
+ln -fs (realpath wezterm/wezterm.lua) ~/.wezterm.lua
+
 ln -fs (realpath git/gitconfig) ~/.gitconfig
 
 set uname (uname)
