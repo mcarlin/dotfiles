@@ -1,7 +1,7 @@
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
-yabai -m config top_padding    10
+yabai -m config top_padding    20
 yabai -m config bottom_padding 10
 yabai -m config left_padding   10
 yabai -m config right_padding  10
@@ -25,3 +25,7 @@ yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Prefere
 yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Edit configuration' manage=off
 yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Terminal' manage=off
 yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP)$' title='Run/Debug Configurations' manage=off
+
+# Triggers a custom event in sketchybar 
+yabai -m signal --add event=window_created action="sketchybar -m --trigger window_change &> /dev/null"
+yabai -m signal --add event=window_destroyed action="sketchybar -m --trigger window_change &> /dev/null"

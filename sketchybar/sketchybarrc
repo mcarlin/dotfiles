@@ -1,0 +1,101 @@
+
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+
+source "$HOME/.config/sketchybar/colors.sh"
+source "$HOME/.config/sketchybar/icons.sh"
+
+sketchybar --bar color=$COLOR_BACKGROUND \
+                 height=45 \
+                 margin=4 \
+                 corner_radius=5 \
+
+
+# Defaults
+sketchybar --default padding_left=8                                    \
+                     padding_right=8                                   \
+                                                                       \
+                     background.border_color=$COLOR_YELLOW             \
+                     background.border_width=2                         \
+                     background.height=40                              \
+                     background.corner_radius=12                       \
+                                                                       \
+                     icon.color=$COLOR_YELLOW                          \
+                     icon.highlight_color=$COLOR_BACKGROUND            \
+                     icon.padding_left=6                               \
+                     icon.padding_right=2                              \
+                     icon.font="Iosevka Nerd Font:Regular:16.0"  \
+                                                                       \
+                     label.color=$COLOR_YELLOW                         \
+                     label.highlight_color=$COLOR_BACKGROUND           \
+                     label.padding_left=2                              \
+                     label.padding_right=6                             \
+                     label.font="Iosevka Nerd Font:Regular:12.0"
+
+# Register custom event - this will be use by sketchybar's space items as well as app_space.sh
+sketchybar --add event window_change
+
+# Space items
+COLORS_SPACE=($COLOR_YELLOW $COLOR_CYAN $COLOR_MAGENTA $COLOR_WHITE $COLOR_BLUE $COLOR_RED $COLOR_GREEN)
+LENGTH=${#ICONS_SPACE[@]}
+
+for i in "${!ICONS_SPACE[@]}"
+do
+  sid=$(($i+1))
+  PAD_LEFT=2
+  PAD_RIGHT=2
+  if [[ $i == 0 ]]; then
+    PAD_LEFT=8
+  elif [[ $i == $(($LENGTH-1)) ]]; then
+    PAD_RIGHT=8
+  fi
+  sketchybar --add space space.$sid left                                       \
+             --set       space.$sid script="$PLUGIN_DIR/app_space.sh"          \
+                                    associated_space=$sid                      \
+                                    padding_left=$PAD_LEFT                     \
+                                    padding_right=$PAD_RIGHT                   \
+                                    background.color=${COLORS_SPACE[i]}        \
+                                    background.border_width=0                  \
+                                    background.corner_radius=6                 \
+                                    background.height=24                       \
+                                    icon=${ICONS_SPACE[i]}                     \
+                                    icon.color=$COLOR_WHITE_BRIGHT              \
+                                    label="_"                                  \
+                                    label.color=${COLORS_SPACE[i]}             \
+                                               update_freq=5 \
+             --subscribe space.$sid front_app_switched window_change
+done
+
+# Space bracket
+sketchybar --add bracket spaces '/space\..*/'                      \
+           --set         spaces background.color=$COLOR_BACKGROUND
+
+#######################
+######## RIGHT ########
+#######################
+
+# Time
+
+sketchybar -m --add item time right \
+              --set time script="$PLUGIN_DIR/time.sh" \
+                           icon=⏳\
+                           background.color=$COLOR_BACKGROUND \
+                           background.height=25 \
+                           update_freq=1
+
+
+# Volume
+sketchybar -m --add item volume right \
+              --set volume script="$PLUGIN_DIR/volume.sh" \
+                           icon= \
+                           background.color=$COLOR_BACKGROUND \
+                           background.height=20 \
+                           update_freq=1
+
+# Weather
+sketchybar -m --add item weather right \
+              --set weather update_freq=21600 \
+                            script="$PLUGIN_DIR/weather.sh"
+
+# Finalize and update
+sketchybar -m --update
+

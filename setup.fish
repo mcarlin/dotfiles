@@ -28,6 +28,8 @@ end
 
 ln -fs (realpath wezterm/wezterm.lua) ~/.wezterm.lua
 
+ln -fs (realpath sketchybar) ~/.config/sketchybar
+
 ln -fs (realpath git/gitconfig) ~/.gitconfig
 
 set uname (uname)
