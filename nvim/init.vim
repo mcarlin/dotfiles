@@ -121,6 +121,6 @@ set colorcolumn=
 
 else """ Vanilla
 
-lua require("init")
+lua require("config/lazy")
 
 end
