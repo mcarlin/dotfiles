@@ -74,4 +74,8 @@ return {
       return cmp.setup(config)
     end,
   },
+  {
+    "eraserhd/parinfer-rust",
+    build = "cargo build --release",
+  },
 }

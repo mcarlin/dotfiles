@@ -17,6 +17,7 @@ return {
       -- add tsx and treesitter
       vim.list_extend(opts.ensure_installed, {
         "go",
+        "clojure",
       })
     end,
   },
