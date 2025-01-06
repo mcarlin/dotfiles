@@ -38,6 +38,9 @@ if has('ide') """ IDEA
   """ Plugin Settings
   let g:argtextobj_pairs="[:],(:),<:>"
 
+  """
+  set clipboard+=unnamedplus
+
   """ Idea specific settings
   set ideajoin
   set ideastatusicon=gray
@@ -82,6 +85,8 @@ if has('ide') """ IDEA
   map <leader>tt <Action>(ActivateProjectToolWindow)
 
   nmap s <Plug>(easymotion-overwin-w)
+
+  map <space>pp <Action>(OpenProjectWindows)
 
 elseif exists('g:vscode') """ VSCode
 
