@@ -20,11 +20,11 @@ yabai -m rule --add title='Preferences$' manage=off
 
 yabai -m rule --add title='Settings$' manage=off
 
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|PyCharm)$' title='Project Structure' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|PyCharm)$' title='Preferences' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|PyCharm)$' title='Edit configuration' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|PyCharm)$' title='Terminal' manage=off
-yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|PyCharm)$' title='Run/Debug Configurations' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|RustRover|RustRover-EAP|PyCharm)$' title='Project Structure' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|RustRover|RustRover-EAP|PyCharm)$' title='Preferences' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|RustRover|RustRover-EAP|PyCharm)$' title='Edit configuration' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|RustRover|RustRover-EAP|PyCharm)$' title='Terminal' manage=off
+yabai -m rule --add app='^(IntelliJ IDEA-EAP|GoLand|GoLand-EAP|RustRover|RustRover-EAP|PyCharm)$' title='Run/Debug Configurations' manage=off
 
 # Triggers a custom event in sketchybar 
 yabai -m signal --add event=window_created action="sketchybar -m --trigger window_change &> /dev/null"
