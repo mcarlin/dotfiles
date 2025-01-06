@@ -20,6 +20,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     { import = "lazyvim.plugins.extras.ui.treesitter-context" },
     { import = "lazyvim.plugins.extras.coding.luasnip" },
+    { import = "lazyvim.plugins.extras.lang.rust" },
     -- import/override with your plugins
     { import = "plugins" },
   },
