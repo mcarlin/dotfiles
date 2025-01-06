@@ -6,7 +6,12 @@ return {
     opts = {
       ---@type lspconfig.options
       servers = {
+        cssls = {},
+        eslintd = {},
         gopls = {},
+        html_lsp = {},
+        prettierd = {},
+        tsserver = {},
       },
     },
   },
