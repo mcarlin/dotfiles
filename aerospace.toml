@@ -177,3 +177,9 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
+
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+10 = ['built-in']
+11 = ['LG FULL HD']
+12 = ['LG Ultra HD']
