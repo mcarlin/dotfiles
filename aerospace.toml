@@ -181,5 +181,5 @@ shift-down = ['volume set 0', 'mode main']
 [workspace-to-monitor-force-assignment]
 1 = 'main'
 10 = ['built-in']
-11 = ['LG FULL HD', 'HP E243 (1)']
-12 = ['LG Ultra HD', 'HP E243 (2)']
+11 = ['LG Ultra HD.*1', 'HP E243.*1']
+12 = ['LG Ultra HD.*2', 'HP E243.*2']
