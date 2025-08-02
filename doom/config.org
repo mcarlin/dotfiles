@@ -1,5 +1,9 @@
+#+title: Config
+#+PROPERTY: header-args emacs-lisp :tangle yes
+
+#+BEGIN_SRC emacs-lisp
  (setq
- doom-font (font-spec :family "Fantasque Sans Mono" :size 18 :weight 'regular)
+ doom-font (font-spec :family "Fantasque Sans Mono Nerd" :size 18 :weight 'regular)
  doom-theme 'doom-one
  display-line-numbers-type t
 
@@ -28,3 +32,8 @@
 
 (after! org
   (setq org-directory "~/org"))
+
+#+END_SRC
+
+#+RESULTS:
+: ~/org

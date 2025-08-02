@@ -51,6 +51,7 @@ ln -fs (realpath tridactylrc) ~/.tridactylrc
 
 mkdir -p ~/.doom.d
 ln -fs (realpath doom/config.el) ~/.doom.d/config.el
+ln -fs (realpath doom/config.org) ~/.doom.d/config.org
 ln -fs (realpath doom/custom.el) ~/.doom.d/custom.el
 ln -fs (realpath doom/init.el) ~/.doom.d/init.el
 ln -fs (realpath doom/packages.el) ~/.doom.d/packages.el
