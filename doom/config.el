@@ -1,0 +1,40 @@
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+(setq
+ doom-font (font-spec :family "Fantasque Sans Mono" :size 18 :weight 'regular)
+ doom-theme 'doom-one
+ display-line-numbers-type t
+
+ projectile-project-search-path '("~/code/" "~/code/mopho/"))
+
+;; Mermaid setup
+(use-package! ob-mermaid
+  :config
+  (setq ob-mermaid-cli-path "mmdc")) ; adjust path
+
+;; PlantUML setup
+(use-package! plantuml-mode
+  :config
+  (setq plantuml-executable-path "plantuml")
+  (setq plantuml-default-exec-mode 'executable))
+
+;; Excalidraw setup
+(use-package! org-excalidraw)
+
+;; Enable babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((mermaid . t)
+   (plantuml . t)
+   (dot . t)))
+
+(after! org
+  (setq org-directory "~/org"))
+
+(defvar +work-config
+  (expand-file-name "work-config.el" doom-user-dir)
+  "Non-tracked config for work settings.")
+
+(when (file-exists-p +work-config)
+  (load! "work-config.el")
+  (message "Loaded work-config.el"))

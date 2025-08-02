@@ -23,8 +23,8 @@ mkdir -p ~/.config/alacritty
 ln -fs (realpath alacritty.yml) ~/.config/alacritty/alacritty.yml
 
 if test ! -e ~/.alacritty-colorscheme
-  git clone https://github.com/eendroroy/alacritty-theme.git ~/.alacritty-colorscheme
-end 
+    git clone https://github.com/eendroroy/alacritty-theme.git ~/.alacritty-colorscheme
+end
 
 ln -fs (realpath wezterm/wezterm.lua) ~/.wezterm.lua
 
@@ -33,12 +33,12 @@ ln -fs (realpath sketchybar) ~/.config/sketchybar
 ln -fs (realpath git/gitconfig) ~/.gitconfig
 
 set uname (uname)
-if [ "$uname" = "Darwin" ]
-  mkdir -p ~/Library/Application\ Support/lazygit
-  ln -fs (realpath lazygit/config.yml) ~/Library/Application\ Support/lazygit/config.yml
+if [ "$uname" = Darwin ]
+    mkdir -p ~/Library/Application\ Support/lazygit
+    ln -fs (realpath lazygit/config.yml) ~/Library/Application\ Support/lazygit/config.yml
 else
-  mkdir -p ~/.config/lazygit
-  ln -fs (realpath alacritty.yml) ~/.config/lazygit/config.yml
+    mkdir -p ~/.config/lazygit
+    ln -fs (realpath alacritty.yml) ~/.config/lazygit/config.yml
 end
 
 mkdir -p ~/.config/zellij
@@ -48,3 +48,9 @@ mkdir -p ~/.config/borders
 ln -fs (realpath bordersrc) ~/.config/borders/bordersrc
 
 ln -fs (realpath tridactylrc) ~/.tridactylrc
+
+mkdir -p ~/.doom.d
+ln -fs (realpath doom/config.el) ~/.doom.d/config.el
+ln -fs (realpath doom/custom.el) ~/.doom.d/custom.el
+ln -fs (realpath doom/init.el) ~/.doom.d/init.el
+ln -fs (realpath doom/packages.el) ~/.doom.d/packages.el
