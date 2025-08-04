@@ -3,7 +3,7 @@
 
 #+BEGIN_SRC emacs-lisp
  (setq
- doom-font (font-spec :family "Fantasque Sans Mono Nerd" :size 18 :weight 'regular)
+ doom-font (font-spec :family "FantasqueSansM Nerd Font" :size 18 :weight 'regular)
  doom-theme 'doom-one
  display-line-numbers-type t
 
@@ -31,6 +31,27 @@
    (dot . t)))
 
 (after! org
-  (setq org-directory "~/org"))
+  (setq org-directory "~/org")
+  (setq epa-file-encrypt-to '("mike@mcarlin.com"))
+  (setq epa-file-select-keys nil)
+  (setq epa-file-cache-passphrase-for-symmetric-encryption t))
 
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(after! org-journal
+  (setq org-journal-dir "~/org/")
+  (setq org-journal-file-type 'yearly)
+  (setq org-journal-file-format "journal.org.gpg")
+
+  ;; Journal entry format
+  (setq org-journal-date-format "%A, %B %d, %Y")
+  (setq org-journal-time-format "%I:%M %p "))
+
+;; Add this temporarily to debug
+(after! org-journal
+  (message "Journal dir: %s" org-journal-dir)
+  (message "Journal file: %s" org-journal-file-format)
+  (message "Full path: %s"
+           (expand-file-name org-journal-file-format org-journal-dir)))
 #+END_SRC
