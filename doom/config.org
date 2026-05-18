@@ -79,9 +79,7 @@
 * Org
 ** Directory & Encryption
 #+BEGIN_SRC emacs-lisp
-(setq org-directory
-      (expand-file-name "org-hpe3"
-                        "~/Library/CloudStorage/OneDrive-HewlettPackardEnterprise"))
+(setq org-directory "~/org")  ; override in work-config.el if needed
 
 (after! org
   (setq epa-file-encrypt-to '("mike@mcarlin.com"))
@@ -205,13 +203,7 @@
                   ((org-agenda-overriding-header "Projects")
                    (org-tags-match-list-sublevels nil)))))
 
-          ("j" "Jira / Sprint"
-           ((todo "NEXT|WAITING"
-                  ((org-agenda-overriding-header "Sprint Items")
-                   (org-agenda-tag-filter-preset '("+sprint"))
-                   (org-super-agenda-groups
-                    '((:name "Next Actions" :todo "NEXT")
-                      (:name "Waiting"      :todo "WAITING"))))))))))
+)))
 #+END_SRC
 
 ** super-agenda
@@ -235,85 +227,6 @@
         :desc "Add"        "a" #'org-transclusion-add
         :desc "Add all"    "A" #'org-transclusion-add-all
         :desc "Detach"     "d" #'org-transclusion-detach)))
-#+END_SRC
-
-* Jira
-#+BEGIN_SRC emacs-lisp
-;; Credentials live in work-config.el (not tracked).
-;; SPC J s/e/i/m to insert Jira headings into org files.
-
-(defun my/jira-get-issue (ticket-id)
-  "Fetch TICKET-ID summary and URL via jiralib2.
-Returns a cons cell (summary . browse-url) or nil on failure."
-  (condition-case err
-      (let-alist (jiralib2-get-issue ticket-id)
-        (when .fields.summary
-          (cons .fields.summary
-                (concat jiralib2-url "/browse/" .key))))
-    (error
-     (message "Jira fetch failed for %s: %s" ticket-id (error-message-string err))
-     nil)))
-
-(defun my/org-insert-jira-heading (ticket-id &optional todo-state)
-  "Insert an org heading for TICKET-ID with TODO-STATE (default \"NEXT\")."
-  (let* ((state   (or todo-state "NEXT"))
-         (result  (my/jira-get-issue ticket-id))
-         (summary (if result
-                      (car result)
-                    (read-string (format "Could not reach Jira. Summary for %s: " ticket-id))))
-         (url     (if result
-                      (cdr result)
-                    (concat jiralib2-url "/browse/" ticket-id))))
-    (org-insert-heading-respect-content)
-    (let ((pos (point-marker)))
-      (insert (format "[[%s][%s]] %s" url ticket-id summary))
-      (org-todo state)
-      (org-entry-put pos "JIRA"     ticket-id)
-      (org-entry-put pos "JIRA_URL" url)
-      (org-entry-put pos "CREATED"  (format-time-string "[%Y-%m-%d %a %H:%M]")))))
-
-(defun my/org-insert-jira-story ()
-  "Insert a Jira story as a NEXT heading."
-  (interactive)
-  (my/org-insert-jira-heading (read-string "Jira story ID: ") "NEXT"))
-
-(defun my/org-insert-jira-epic ()
-  "Insert a Jira epic as a PROJECT heading."
-  (interactive)
-  (my/org-insert-jira-heading (read-string "Jira epic ID: ") "PROJECT"))
-
-(defun my/org-insert-jira-issue ()
-  "Insert a Jira issue, prompting for ticket ID and TODO state."
-  (interactive)
-  (let* ((ticket (read-string "Jira ticket ID: "))
-         (state  (completing-read "TODO state: "
-                                  '("NEXT" "TODO" "WAITING" "SOMEDAY" "PROJECT")
-                                  nil t nil nil "NEXT")))
-    (my/org-insert-jira-heading ticket state)))
-
-(defun my/org-insert-jira-heading-manual ()
-  "Insert a Jira heading without an API call (manual fallback)."
-  (interactive)
-  (let* ((ticket  (read-string "Jira ticket ID: "))
-         (summary (read-string (format "Summary for %s: " ticket)))
-         (state   (completing-read "TODO state: "
-                                   '("NEXT" "TODO" "WAITING" "SOMEDAY" "PROJECT")
-                                   nil t nil nil "NEXT"))
-         (url     (concat jiralib2-url "/browse/" ticket)))
-    (org-insert-heading-respect-content)
-    (let ((pos (point-marker)))
-      (insert (format "[[%s][%s]] %s" url ticket summary))
-      (org-todo state)
-      (org-entry-put pos "JIRA"     ticket)
-      (org-entry-put pos "JIRA_URL" url)
-      (org-entry-put pos "CREATED"  (format-time-string "[%Y-%m-%d %a %H:%M]")))))
-
-(map! :leader
-      (:prefix ("J" . "Jira")
-       :desc "Insert story as NEXT"    "s" #'my/org-insert-jira-story
-       :desc "Insert epic as PROJECT"  "e" #'my/org-insert-jira-epic
-       :desc "Insert issue"            "i" #'my/org-insert-jira-issue
-       :desc "Insert heading manually" "m" #'my/org-insert-jira-heading-manual))
 #+END_SRC
 
 * Work config
