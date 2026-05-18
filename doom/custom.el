@@ -3,13 +3,63 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(doom-solarized-light))
  '(custom-safe-themes
-   '("34cf3305b35e3a8132a0b1bdf2c67623bc2cb05b125f8d7d26bd51fd16d547ec" default))
- '(org-agenda-files
-   '("/Users/carlinm/Library/CloudStorage/OneDrive-HewlettPackardEnterprise/org-hpe/2025-07-28.org")))
+   '("2f8af2a3a2fae6b6ea254e7aab6f3a8b5c936428b67869cef647c5f8e7985877"
+     "6963de2ec3f8313bb95505f96bf0cf2025e7b07cefdb93e3d2e348720d401425"
+     "4d714a034e7747598869bef1104e96336a71c3d141fa58618e4606a27507db4c"
+     "72d9086e9e67a3e0e0e6ba26a1068b8b196e58a13ccaeff4bfe5ee6288175432"
+     "a368631abdadffb6882f9994637d7216167912311447f1ec02f9dc58e9cc62a9"
+     "19d62171e83f2d4d6f7c31fc0a6f437e8cec4543234f0548bad5d49be8e344cd"
+     "e4d4cc443964b8a64defc06de3edb2363f7cb1b3c3ae2272b2c1487f626e4318"
+     "1bc640af8b000ae0275dbffefa2eb22ec91f6de53aca87221c125dc710057511"
+     "8d3ef5ff6273f2a552152c7febc40eabca26bae05bd12bc85062e2dc224cde9a"
+     "dfcd2b13f10da4e5e26eb1281611e43a134d4400b06661445e7cbb183c47d2ec"
+     "87fa3605a6501f9b90d337ed4d832213155e3a2e36a512984f83e847102a42f4"
+     "3061706fa92759264751c64950df09b285e3a2d3a9db771e99bcbb2f9b470037"
+     "921f165deb8030167d44eaa82e85fcef0254b212439b550a9b6c924f281b5695"
+     "e14289199861a5db890065fdc5f3d3c22c5bac607e0dbce7f35ce60e6b55fc52"
+     "7771c8496c10162220af0ca7b7e61459cb42d18c35ce272a63461c0fc1336015"
+     "5c8a1b64431e03387348270f50470f64e28dfae0084d33108c33a81c1e126ad6"
+     "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0"
+     "5244ba0273a952a536e07abaad1fdf7c90d7ebb3647f36269c23bfd1cf20b0b8"
+     "9b9d7a851a8e26f294e778e02c8df25c8a3b15170e6f9fd6965ac5f2544ef2a9"
+     "166a2faa9dc5b5b3359f7a31a09127ebf7a7926562710367086fcc8fc72145da"
+     "f053f92735d6d238461da8512b9c071a5ce3b9d972501f7a5e6682a90bf29725"
+     "452068f2985179294c73c5964c730a10e62164deed004a8ab68a5d778a2581da"
+     "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8"
+     "a6920ee8b55c441ada9a19a44e9048be3bfb1338d06fc41bce3819ac22e4b5a1"
+     "5c7720c63b729140ed88cf35413f36c728ab7c70f8cd8422d9ee1cedeb618de5"
+     "4d5d11bfef87416d85673947e3ca3d3d5d985ad57b02a7bb2e32beaf785a100e"
+     "e8bd9bbf6506afca133125b0be48b1f033b1c8647c628652ab7a2fe065c10ef0"
+     "f253a920e076213277eb4cbbdf3ef2062e018016018a941df6931b995c6ff6f6"
+     "fffef514346b2a43900e1c7ea2bc7d84cbdd4aa66c1b51946aade4b8d343b55a"
+     "088cd6f894494ac3d4ff67b794467c2aa1e3713453805b93a8bcb2d72a0d1b53"
+     "13096a9a6e75c7330c1bc500f30a8f4407bd618431c94aeab55c9855731a95e1"
+     "fd22a3aac273624858a4184079b7134fb4e97104d1627cb2b488821be765ff17"
+     "0325a6b5eea7e5febae709dab35ec8648908af12cf2d2b569bedc8da0a3a81c1"
+     "4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
+     "0d2c5679b6d087686dcfd4d7e57ed8e8aedcccc7f1a478cd69704c02e4ee36fe"
+     "21d2bf8d4d1df4859ff94422b5e41f6f2eeff14dd12f01428fa3cb4cb50ea0fb"
+     "2f7fa7a92119d9ed63703d12723937e8ba87b6f3876c33d237619ccbd60c96b9"
+     "7de64ff2bb2f94d7679a7e9019e23c3bf1a6a04ba54341c36e7cf2d2e56e2bcc"
+     "f1e8339b04aef8f145dd4782d03499d9d716fdc0361319411ac2efc603249326"
+     "b7a09eb77a1e9b98cafba8ef1bd58871f91958538f6671b22976ea38c2580755"
+     "6e692e902614c1be82032a986a227d83d05278390ebfeb4fe0cc6e718e6b6b08"
+     "b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19"
+     "014cb63097fc7dbda3edf53eb09802237961cbb4c9e9abd705f23b86511b0a69"
+     "0f1341c0096825b1e5d8f2ed90996025a0d013a0978677956a9e61408fcd2c77"
+     "d97ac0baa0b67be4f7523795621ea5096939a47e8b46378f79e78846e0e4ad3d"
+     "34cf3305b35e3a8132a0b1bdf2c67623bc2cb05b125f8d7d26bd51fd16d547ec" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+;; custom-set-faces was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+
+(put 'customize-themes 'disabled nil)

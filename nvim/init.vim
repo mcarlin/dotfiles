@@ -19,6 +19,14 @@ onoremap k gk
 nnoremap 0 g0
 nnoremap $ g$
 
+
+"==============================
+" Shared Mappings
+"==============================
+
+vnoremap <leader>fl :s/,\s*/,\r/g<CR>
+
+
 "==============================
 " Environment Specific Settings
 "==============================
@@ -34,6 +42,7 @@ if has('ide') """ IDEA
   set textobj-entire
   set ReplaceWithRegister
   set highlightedyank
+  set anyobject
 
   """ Plugin Settings
   let g:argtextobj_pairs="[:],(:),<:>"
@@ -84,7 +93,7 @@ if has('ide') """ IDEA
 
   map <leader>tt <Action>(ActivateProjectToolWindow)
 
-  nmap s <Plug>(easymotion-overwin-w)
+  map <leader>z <Action>(HideAllWindows)
 
   map <space>pp <Action>(OpenProjectWindows)
 

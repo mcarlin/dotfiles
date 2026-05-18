@@ -16,13 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    { import = "lazyvim.plugins.extras.ui.treesitter-context" },
-    { import = "lazyvim.plugins.extras.coding.luasnip" },
-    { import = "lazyvim.plugins.extras.lang.rust" },
-    { import = "lazyvim.plugins.extras.lang.clojure" },
-    -- import/override with your plugins
     { import = "plugins" },
   },
   defaults = {

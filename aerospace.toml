@@ -31,13 +31,6 @@ default-root-container-layout = 'tiles'
 #               tall monitor (anything higher than wide) gets vertical orientation
 default-root-container-orientation = 'auto'
 
-# Mouse follows focus when focused monitor changes
-# Drop it from your config, if you don't like this behavior
-# See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
-# See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
-# Fallback value (if you omit the key): on-focused-monitor-changed = []
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
@@ -129,6 +122,7 @@ alt-9 = 'workspace 9'
 alt-a = 'workspace 10' # In your config, you can drop workspace bindings that you don't need
 alt-b = 'workspace 11'
 alt-c = 'workspace 12'
+alt-d = 'workspace 13'
 
 # Fullscreen
 alt-f = 'fullscreen'
@@ -146,6 +140,7 @@ alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-a = 'move-node-to-workspace 10'
 alt-shift-b = 'move-node-to-workspace 11'
 alt-shift-c = 'move-node-to-workspace 12'
+alt-shift-d = 'move-node-to-workspace 13'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -178,8 +173,59 @@ down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
 
+[[on-window-detected]]
+    if.app-id = 'com.google.Chrome'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 13'
+
+[[on-window-detected]]
+    if.app-id = 'md.obsidian'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 12'
+
+[[on-window-detected]]
+    if.app-id = 'org.gnu.Emacs'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 12'
+
+[[on-window-detected]]
+    if.app-id = 'com.github.wez.wezterm'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+    if.app-id = 'dev.zed.Zed'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+    if.app-id = 'com.kagi.kagimacOS'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 10'
+
+[[on-window-detected]]
+    if.app-id = 'com.jetbrains.intellij'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+    if.app-id = 'com.tinyspeck.slackmacgap'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 11'
+
+[[on-window-detected]]
+    if.app-id = 'com.microsoft.teams2'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 11'
+
+[[on-window-detected]]
+    if.app-id = 'com.microsoft.Outlook'
+    if.during-aerospace-startup = true
+    run = 'move-node-to-workspace 11'
+
 [workspace-to-monitor-force-assignment]
 1 = 'main'
-10 = ['built-in']
-11 = ['LG Ultra HD.*1', 'HP E243.*1']
-12 = ['LG Ultra HD.*2', 'HP E243.*2']
+10 = ['LG Ultra HD', 'PHL 346E2C', 'built-in']
+11 = ['LG Ultra HD', 'LG Ultra HD.*1', 'PHL 346E2C', 'PHL 346E2C.*1', 'HP E243', 'HP E243.*1']
+12 = ['LG Ultra HD.*2', 'LG Ultra HD', 'PHL 346E2C.*2', 'HP E243.*2']
+13 = ['LG Ultra HD', 'PHL 346E2C']

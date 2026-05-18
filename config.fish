@@ -26,3 +26,13 @@ function gitdbf --description "Deletes a git branch both locally (forced) and re
   git push -d origin $BRANCH
   git branch -D $BRANCH
 end
+
+# opencode
+fish_add_path /Users/carlinm/.opencode/bin
+
+# ai_rc
+source /Users/carlinm/dots/.ai_rc
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH

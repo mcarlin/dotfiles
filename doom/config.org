@@ -1,57 +1,328 @@
 #+title: Config
 #+PROPERTY: header-args emacs-lisp :tangle yes
 
+* Core
 #+BEGIN_SRC emacs-lisp
- (setq
+(setq
  doom-font (font-spec :family "FantasqueSansM Nerd Font" :size 18 :weight 'regular)
  doom-theme 'doom-one
  display-line-numbers-type t
-
  projectile-project-search-path '("~/code/" "~/code/mopho/"))
+#+END_SRC
 
-;; Mermaid setup
+* Diagrams
+#+BEGIN_SRC emacs-lisp
+;; Mermaid
 (use-package! ob-mermaid
   :config
-  (setq ob-mermaid-cli-path "mmdc")) ; adjust path
+  (setq ob-mermaid-cli-path "mmdc"))
 
-;; PlantUML setup
+;; PlantUML
 (use-package! plantuml-mode
   :config
   (setq plantuml-executable-path "plantuml")
   (setq plantuml-default-exec-mode 'executable))
 
-;; Excalidraw setup
+;; Excalidraw
 (use-package! org-excalidraw)
 
-;; Enable babel languages
+(after! org-excalidraw
+  (defun org-excalidraw-to-svg-thumbnail (file)
+    "Export excalidraw FILE to svg thumbnail."
+    (let* ((path (expand-file-name file))
+           (svg-path (org-excalidraw-svg-thumbnail-path path)))
+      (unless (string-suffix-p ".excalidraw" path)
+        (error "Excalidraw diagrams must end with .excalidraw extension."))
+      (cond
+       ((executable-find "kroki")
+        (shell-command
+         (format "kroki convert \"%s\" --type excalidraw --format svg --out-file \"%s\""
+                 path svg-path)))
+       ((executable-find "excalidraw_export")
+        (shell-command
+         (format "excalidraw_export --ember_fonts --rename_fonts \"%s\"" path)))
+       (t
+        (error "Can't convert %s to svg." file))))))
+
+;; Babel languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((mermaid . t)
+ '((mermaid  . t)
    (plantuml . t)
-   (dot . t)))
+   (dot      . t)))
+
+(use-package! ob-async)
+#+END_SRC
+
+* AI / gptel
+#+BEGIN_SRC emacs-lisp
+(use-package! gptel
+  :config
+  (require 'gptel-org)
+  (setq gptel-model                    'claude-sonnet-4.5
+        gptel-default-mode             'org-mode
+        gptel-use-curl                 t
+        gptel-use-tools                t
+        gptel-confirm-tool-calls       'always
+        gptel-include-tool-results     'auto
+        gptel-display-buffer-action    '(display-buffer-same-window)
+        gptel-backend                  (gptel-make-gh-copilot "Copilot" :stream t)))
+
+(use-package! gptel-tool-library
+  :after gptel
+  :config
+  (setq gptel-tool-library-use-maybe-safe t)
+  (dolist (module '("buffer" "elisp" "emacs" "os"))
+    (gptel-tool-library-load-module module)))
+#+END_SRC
+
+* Org
+** Directory & Encryption
+#+BEGIN_SRC emacs-lisp
+(setq org-directory
+      (expand-file-name "org-hpe3"
+                        "~/Library/CloudStorage/OneDrive-HewlettPackardEnterprise"))
 
 (after! org
-  (setq org-directory "~/org")
   (setq epa-file-encrypt-to '("mike@mcarlin.com"))
   (setq epa-file-select-keys nil)
   (setq epa-file-cache-passphrase-for-symmetric-encryption t))
-
 #+END_SRC
 
+** Journal
 #+BEGIN_SRC emacs-lisp
 (after! org-journal
-  (setq org-journal-dir "~/org/")
-  (setq org-journal-file-type 'yearly)
-  (setq org-journal-file-format "journal.org.gpg")
+  (setq org-journal-dir         (concat org-directory "/")
+        org-journal-file-type   'yearly
+        org-journal-file-format "journal.org.gpg"
+        org-journal-date-format "%A, %B %d, %Y"
+        org-journal-time-format "%I:%M %p "))
+#+END_SRC
 
-  ;; Journal entry format
-  (setq org-journal-date-format "%A, %B %d, %Y")
-  (setq org-journal-time-format "%I:%M %p "))
+** GTD
+#+BEGIN_SRC emacs-lisp
+(after! org
+  ;; ── Agenda files ─────────────────────────────────────────────────────────
+  (setq org-agenda-files
+        (list (concat org-directory "/todo.org")
+              (concat org-directory "/tickler.org")))
 
-;; Add this temporarily to debug
-(after! org-journal
-  (message "Journal dir: %s" org-journal-dir)
-  (message "Journal file: %s" org-journal-file-format)
-  (message "Full path: %s"
-           (expand-file-name org-journal-file-format org-journal-dir)))
+  ;; ── Keywords ─────────────────────────────────────────────────────────────
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "SOMEDAY(s)"
+                    "|" "DONE(d!)" "CANCELLED(c@)")))
+
+  (setq org-todo-keyword-faces
+        '(("TODO"      . (:foreground "#7c7c75" :weight bold))
+          ("NEXT"      . (:foreground "#0098dd" :weight bold))
+          ("WAITING"   . (:foreground "#9f7efe" :weight bold))
+          ("SOMEDAY"   . (:foreground "#e6c547" :weight bold))
+          ("DONE"      . (:foreground "#50a14f" :weight bold))
+          ("CANCELLED" . (:foreground "#ff6c6b" :weight bold))))
+
+  ;; ── Tags ─────────────────────────────────────────────────────────────────
+  (setq org-tag-alist
+        '((:startgroup)
+          ("@home"     . ?h)
+          ("@office"   . ?o)
+          ("@computer" . ?c)
+          ("@phone"    . ?p)
+          ("@errands"  . ?e)
+          (:endgroup)
+          ("PROJECT"   . ?P)
+          ("WAITING"   . ?W)
+          ("SOMEDAY"   . ?S)
+          ("sprint"    . ?s)))
+
+  ;; ── Capture templates ────────────────────────────────────────────────────
+  (setq org-capture-templates
+        `(("i" "Inbox (quick capture)" entry
+           (file ,(concat org-directory "/todo.org"))
+           "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n"
+           :empty-lines-after 1)
+
+          ("n" "Next Action" entry
+           (file+headline ,(concat org-directory "/todo.org") "Standalone Actions")
+           "* NEXT %?\t\t\t:%^{Context|@computer|@phone|@home|@office|@errands}:\n:PROPERTIES:\n:CREATED: %U\n:END:\n"
+           :empty-lines-after 1)
+
+          ("p" "New Project" entry
+           (file+headline ,(concat org-directory "/todo.org") "Projects")
+           "* PROJECT %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n"
+           :empty-lines-after 1)
+
+          ("s" "Someday / Maybe" entry
+           (file+headline ,(concat org-directory "/someday.org") "Ideas & Projects")
+           "* SOMEDAY %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n"
+           :empty-lines-after 1)
+
+          ("t" "Tickler (reminder)" entry
+           (file+headline ,(concat org-directory "/tickler.org") "Reminders")
+           "* TODO %?\nSCHEDULED: %^t\n:PROPERTIES:\n:CREATED: %U\n:END:\n"
+           :empty-lines-after 1)
+
+          ("r" "Reference" entry
+           (file+headline ,(concat org-directory "/reference.org") "Tech Notes")
+           "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n"
+           :empty-lines-after 1)))
+
+  ;; ── Refile ───────────────────────────────────────────────────────────────
+  (setq org-refile-targets
+        `((,(concat org-directory "/todo.org")      :maxlevel . 3)
+          (,(concat org-directory "/someday.org")   :level    . 1)
+          (,(concat org-directory "/tickler.org")   :maxlevel . 2)
+          (,(concat org-directory "/reference.org") :level    . 1)))
+  (setq org-refile-use-outline-path        t)
+  (setq org-outline-path-complete-in-steps nil)
+
+  ;; ── Logging ──────────────────────────────────────────────────────────────
+  (setq org-log-done       'time)
+  (setq org-log-into-drawer t)
+
+  ;; ── Agenda display ───────────────────────────────────────────────────────
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-deadline-if-done  t)
+  (setq org-return-follows-link           t)
+
+  ;; ── Custom agenda views ──────────────────────────────────────────────────
+  (setq org-agenda-custom-commands
+        '(("g" "GTD Dashboard"
+           ((agenda ""
+                    ((org-agenda-span 'day)
+                     (org-agenda-overriding-header "Today")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Actions")
+                   (org-super-agenda-groups
+                    '((:name "@computer" :tag "@computer")
+                      (:name "@phone"    :tag "@phone")
+                      (:name "@home"     :tag "@home")
+                      (:name "@office"   :tag "@office")
+                      (:name "@errands"  :tag "@errands")
+                      (:name "Other"     :anything t)))))
+            (todo "WAITING"
+                  ((org-agenda-overriding-header "Waiting For")))
+            (tags "PROJECT"
+                  ((org-agenda-overriding-header "Projects")
+                   (org-tags-match-list-sublevels nil)))))
+
+          ("j" "Jira / Sprint"
+           ((todo "NEXT|WAITING"
+                  ((org-agenda-overriding-header "Sprint Items")
+                   (org-agenda-tag-filter-preset '("+sprint"))
+                   (org-super-agenda-groups
+                    '((:name "Next Actions" :todo "NEXT")
+                      (:name "Waiting"      :todo "WAITING"))))))))))
+#+END_SRC
+
+** super-agenda
+#+BEGIN_SRC emacs-lisp
+(use-package! org-super-agenda
+  :after org-agenda
+  :demand t
+  :config
+  (org-super-agenda-mode))
+#+END_SRC
+
+** Transclusion
+#+BEGIN_SRC emacs-lisp
+(use-package! org-transclusion)
+
+(map! :leader
+      (:prefix ("k" . "knowledge")
+       (:prefix ("t" . "transclusion")
+        :desc "Remove"     "r" #'org-transclusion-remove
+        :desc "Remove all" "R" #'org-transclusion-remove-all
+        :desc "Add"        "a" #'org-transclusion-add
+        :desc "Add all"    "A" #'org-transclusion-add-all
+        :desc "Detach"     "d" #'org-transclusion-detach)))
+#+END_SRC
+
+* Jira
+#+BEGIN_SRC emacs-lisp
+;; Credentials live in work-config.el (not tracked).
+;; SPC J s/e/i/m to insert Jira headings into org files.
+
+(defun my/jira-get-issue (ticket-id)
+  "Fetch TICKET-ID summary and URL via jiralib2.
+Returns a cons cell (summary . browse-url) or nil on failure."
+  (condition-case err
+      (let-alist (jiralib2-get-issue ticket-id)
+        (when .fields.summary
+          (cons .fields.summary
+                (concat jiralib2-url "/browse/" .key))))
+    (error
+     (message "Jira fetch failed for %s: %s" ticket-id (error-message-string err))
+     nil)))
+
+(defun my/org-insert-jira-heading (ticket-id &optional todo-state)
+  "Insert an org heading for TICKET-ID with TODO-STATE (default \"NEXT\")."
+  (let* ((state   (or todo-state "NEXT"))
+         (result  (my/jira-get-issue ticket-id))
+         (summary (if result
+                      (car result)
+                    (read-string (format "Could not reach Jira. Summary for %s: " ticket-id))))
+         (url     (if result
+                      (cdr result)
+                    (concat jiralib2-url "/browse/" ticket-id))))
+    (org-insert-heading-respect-content)
+    (let ((pos (point-marker)))
+      (insert (format "[[%s][%s]] %s" url ticket-id summary))
+      (org-todo state)
+      (org-entry-put pos "JIRA"     ticket-id)
+      (org-entry-put pos "JIRA_URL" url)
+      (org-entry-put pos "CREATED"  (format-time-string "[%Y-%m-%d %a %H:%M]")))))
+
+(defun my/org-insert-jira-story ()
+  "Insert a Jira story as a NEXT heading."
+  (interactive)
+  (my/org-insert-jira-heading (read-string "Jira story ID: ") "NEXT"))
+
+(defun my/org-insert-jira-epic ()
+  "Insert a Jira epic as a PROJECT heading."
+  (interactive)
+  (my/org-insert-jira-heading (read-string "Jira epic ID: ") "PROJECT"))
+
+(defun my/org-insert-jira-issue ()
+  "Insert a Jira issue, prompting for ticket ID and TODO state."
+  (interactive)
+  (let* ((ticket (read-string "Jira ticket ID: "))
+         (state  (completing-read "TODO state: "
+                                  '("NEXT" "TODO" "WAITING" "SOMEDAY" "PROJECT")
+                                  nil t nil nil "NEXT")))
+    (my/org-insert-jira-heading ticket state)))
+
+(defun my/org-insert-jira-heading-manual ()
+  "Insert a Jira heading without an API call (manual fallback)."
+  (interactive)
+  (let* ((ticket  (read-string "Jira ticket ID: "))
+         (summary (read-string (format "Summary for %s: " ticket)))
+         (state   (completing-read "TODO state: "
+                                   '("NEXT" "TODO" "WAITING" "SOMEDAY" "PROJECT")
+                                   nil t nil nil "NEXT"))
+         (url     (concat jiralib2-url "/browse/" ticket)))
+    (org-insert-heading-respect-content)
+    (let ((pos (point-marker)))
+      (insert (format "[[%s][%s]] %s" url ticket summary))
+      (org-todo state)
+      (org-entry-put pos "JIRA"     ticket)
+      (org-entry-put pos "JIRA_URL" url)
+      (org-entry-put pos "CREATED"  (format-time-string "[%Y-%m-%d %a %H:%M]")))))
+
+(map! :leader
+      (:prefix ("J" . "Jira")
+       :desc "Insert story as NEXT"    "s" #'my/org-insert-jira-story
+       :desc "Insert epic as PROJECT"  "e" #'my/org-insert-jira-epic
+       :desc "Insert issue"            "i" #'my/org-insert-jira-issue
+       :desc "Insert heading manually" "m" #'my/org-insert-jira-heading-manual))
+#+END_SRC
+
+* Work config
+#+BEGIN_SRC emacs-lisp
+(defvar +work-config
+  (expand-file-name "work-config.el" doom-user-dir)
+  "Non-tracked config for work-specific settings.")
+
+(when (file-exists-p +work-config)
+  (load! "work-config.el")
+  (message "Loaded work-config.el"))
 #+END_SRC
