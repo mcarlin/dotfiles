@@ -1,0 +1,18 @@
+{
+  "showFloatingNotifications" : true,
+  "runScriptOnProfileChange" : "",
+  "enableIntegrations" : false,
+  "enableFocusManagement" : true,
+  "menuBarTitleTemplate" : "$WORKSPACE",
+  "runScriptOnWorkspaceChange" : "",
+  "runScriptOnLaunch" : "",
+  "showMenuBarTitle" : true,
+  "centerCursorOnWorkspaceChange" : true,
+  "focusNextWorkspaceWindow" : {
+    "keyCode" : 48,
+    "modifiers" : 917504
+  },
+  "checkForUpdatesAutomatically" : false,
+  "centerCursorOnFocusChange" : true,
+  "changeWorkspaceOnAppAssign" : true
+}

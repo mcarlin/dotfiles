@@ -1,0 +1,112 @@
+{
+  "profiles" : [
+    {
+      "name" : "Default",
+      "id" : "7F09AABF-180B-4145-B0C4-1D83D7ABE248",
+      "workspaces" : [
+        {
+          "apps" : [
+            {
+              "iconPath" : "\/Users\/carlinm\/Library\/Caches\/JetBrains\/JetBrainsClientDist\/JetBrainsClient-251.20015.29-aarch64.sit-b9b4289c82.ide.d\/IntelliJ IDEA 2025.1 EAP.app\/Contents\/Resources\/jetbrains_client.icns",
+              "bundleIdentifier" : "com.jetbrains.cwm.guest-EAP",
+              "name" : "IntelliJ IDEA-EAP"
+            }
+          ],
+          "shortcut" : {
+            "keyCode" : 8,
+            "modifiers" : 917504
+          },
+          "id" : "0B1F1D24-F2F9-4DA2-87C9-6F01177AAB8B",
+          "name" : "Code",
+          "assignAppShortcut" : {
+            "keyCode" : 0,
+            "modifiers" : 917504
+          },
+          "display" : "PHL 346E2C"
+        },
+        {
+          "name" : "Chat",
+          "display" : "HP E243 (1)",
+          "shortcut" : {
+            "keyCode" : 1,
+            "modifiers" : 917504
+          },
+          "id" : "24B54C21-9A27-414A-9C82-C8F081D69378",
+          "apps" : [
+            {
+              "name" : "Slack",
+              "bundleIdentifier" : "com.tinyspeck.slackmacgap",
+              "iconPath" : "\/Applications\/Slack.app\/Contents\/Resources\/electron.icns"
+            },
+            {
+              "name" : "Microsoft Teams",
+              "iconPath" : "\/Applications\/Microsoft Teams.app\/Contents\/Resources\/icon.icns",
+              "bundleIdentifier" : "com.microsoft.teams2"
+            }
+          ]
+        },
+        {
+          "name" : "Email",
+          "id" : "167AD931-9A84-4572-93A3-F48014564923",
+          "apps" : [
+            {
+              "iconPath" : "\/Applications\/Microsoft Outlook.app\/Contents\/Resources\/Outlook.icns",
+              "name" : "Microsoft Outlook",
+              "bundleIdentifier" : "com.microsoft.Outlook"
+            }
+          ],
+          "display" : "HP E243 (1)",
+          "shortcut" : {
+            "modifiers" : 917504,
+            "keyCode" : 14
+          }
+        },
+        {
+          "display" : "HP E243 (1)",
+          "shortcut" : {
+            "keyCode" : 17,
+            "modifiers" : 917504
+          },
+          "name" : "Terminal",
+          "apps" : [
+            {
+              "name" : "WezTerm",
+              "bundleIdentifier" : "com.github.wez.wezterm",
+              "iconPath" : "\/Applications\/WezTerm.app\/Contents\/Resources\/terminal.icns"
+            }
+          ],
+          "id" : "DC686FB1-6F45-438C-94B8-C18F3D7A243A"
+        },
+        {
+          "name" : "Knowledge",
+          "shortcut" : {
+            "keyCode" : 40,
+            "modifiers" : 917504
+          },
+          "apps" : [
+            {
+              "iconPath" : "\/Applications\/Obsidian.app\/Contents\/Resources\/icon.icns",
+              "name" : "Obsidian",
+              "bundleIdentifier" : "md.obsidian"
+            }
+          ],
+          "id" : "372C3B61-5812-4D24-9D40-3D77E4AD9EDE",
+          "display" : "HP E243 (2)"
+        },
+        {
+          "name" : "Browser",
+          "apps" : [
+            {
+              "bundleIdentifier" : "org.mozilla.firefox",
+              "iconPath" : "\/Applications\/Firefox.app\/Contents\/Resources\/firefox.icns",
+              "name" : "Firefox"
+            }
+          ],
+          "id" : "347649C5-F31E-438A-AAF4-64EF63CAD268",
+          "display" : "HP E243 (2)"
+        }
+      ]
+    }
+  ],
+  "selectedProfileId" : "7F09AABF-180B-4145-B0C4-1D83D7ABE248"
+}

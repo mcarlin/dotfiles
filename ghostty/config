@@ -1,0 +1,12 @@
+# Font
+font-family = Fantasque Sans Mono
+font-size = 20
+adjust-cell-height = 30%
+
+# Appearance
+macos-titlebar-style = hidden
+window-padding-x = 0
+window-padding-y = 0
+
+# Color Scheme
+theme = Gruvbox Dark

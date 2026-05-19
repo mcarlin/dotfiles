@@ -54,3 +54,24 @@ ln -fs (realpath doom/config.org) ~/.doom.d/config.org
 ln -fs (realpath doom/custom.el) ~/.doom.d/custom.el
 ln -fs (realpath doom/init.el) ~/.doom.d/init.el
 ln -fs (realpath doom/packages.el) ~/.doom.d/packages.el
+
+# Ghostty
+mkdir -p ~/.config/ghostty
+ln -fs (realpath ghostty/config) ~/.config/ghostty/config
+
+# Zed
+ln -fs (realpath zed) ~/.config/zed
+
+# Atuin
+mkdir -p ~/.config/atuin
+ln -fs (realpath atuin/config.toml) ~/.config/atuin/config.toml
+
+# Btop
+ln -fs (realpath btop) ~/.config/btop
+
+# Flashspace (monitor layout — review profiles.json on new machine)
+ln -fs (realpath flashspace) ~/.config/flashspace
+
+# JJ (jujutsu)
+mkdir -p ~/.config/jj
+ln -fs (realpath jj/config.toml) ~/.config/jj/config.toml
